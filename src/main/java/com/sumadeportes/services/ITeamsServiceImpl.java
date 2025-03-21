@@ -1,0 +1,23 @@
+package com.sumadeportes.services;
+
+import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.entities.Team;
+import com.sumadeportes.model.repositories.TeamRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+@Service
+public class ITeamsServiceImpl implements ITeamService {
+    private final TeamRepository teamRepository;
+
+    public ITeamsServiceImpl(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
+    }
+
+
+    @Override
+    public List<Team> getAllTeams() {
+        return (List<Team>) teamRepository.findAll();
+    }
+}
