@@ -5,6 +5,7 @@ import com.sumadeportes.model.entities.Test;
 import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.services.ITestService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test")
+@CrossOrigin(origins = "https://erika-github.github.io")
 public class TestController {
 
     private final ITestService testService;

@@ -25,14 +25,14 @@ public class Tournament implements Serializable {
     private Long id;
 
    private String tournamentName;
-   private String startDate;
-   private String endDate;
+   private LocalDate startDate;
+   private LocalDate endDate;
 
  // @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, orphanRemoval = true)
   //  private List<Event> events;
 
 
-    public Tournament(String tournament, String startDate, String endDate) {
+    public Tournament(String tournament, LocalDate startDate, LocalDate endDate) {
         this.tournamentName = tournament;
         this.startDate = startDate;
         this.endDate = endDate;

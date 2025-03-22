@@ -3,12 +3,14 @@ package com.sumadeportes.controllers;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.services.IMasterTournamentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/master-tournaments")
+@CrossOrigin(origins = "https://erika-github.github.io")
 public class MasterTournamentController {
     private final IMasterTournamentService masterTournamentService;
 

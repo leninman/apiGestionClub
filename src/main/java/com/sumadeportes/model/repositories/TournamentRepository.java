@@ -18,7 +18,7 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     @Query("SELECT t FROM Tournament t WHERE t.tournamentName = :name")
     Tournament findTournamentByName(@Param("name") String name);
 
-    Tournament findTournamentByTournamentNameAndStartDateAndEndDate(String tournamentName, String startDate, String endDate);
+    Tournament findTournamentByTournamentNameAndStartDateAndEndDate(String tournamentName, LocalDate startDate, LocalDate endDate);
 
 
 }

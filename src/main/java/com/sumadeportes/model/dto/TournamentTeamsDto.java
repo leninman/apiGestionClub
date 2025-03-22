@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class TournamentTeamsDto {
     private String tournamentName;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<String> teamsNames;
 
 }

@@ -26,8 +26,8 @@ public class EventDto implements Serializable {
     private String tournamentName;
     private Integer eventNumber;
     private String eventName;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
 
 

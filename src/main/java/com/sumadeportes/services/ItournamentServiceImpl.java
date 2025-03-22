@@ -45,7 +45,7 @@ public class ItournamentServiceImpl implements ITournamentService {
 
     @Override
     @Transactional
-    public Tournament createTournament(String tournament, String startDate,String endDate,List<String> teamNames) {
+    public Tournament createTournament(String tournament, LocalDate startDate,LocalDate endDate,List<String> teamNames) {
         Tournament savedTournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(tournament,startDate,endDate);
         Tournament t=null;
         if (savedTournament == null) {

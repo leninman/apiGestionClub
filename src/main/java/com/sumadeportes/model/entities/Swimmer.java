@@ -28,8 +28,8 @@ public class Swimmer implements Serializable {
     private String secondSurename;
     private Integer age;
     private String gender;
-    private String birthDate;
-    private String incomingDate;
+    private LocalDate birthDate;
+    private LocalDate incomingDate;
     private String email;
     private String swimmerKey;
     private String status;

@@ -22,7 +22,7 @@ public class UserDto implements Serializable {
     private String documentNumber;
     private String firstName;
     private String lastName;
-    private String birthDate;
+    private LocalDate birthDate;
     private String email;
     private String password;
     private Boolean locked;
