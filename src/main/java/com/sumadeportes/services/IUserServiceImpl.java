@@ -72,4 +72,9 @@ public class IUserServiceImpl implements IUserService {
         return updatedUser;
 
     }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return (List<UserEntity>) userRepository.findAll();
+    }
 }

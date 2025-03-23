@@ -72,6 +72,17 @@ public class UserController {
         }
     }
 
+
+
+    @GetMapping("/getAll")
+    public ResponseEntity<respDto> getAllTeams() {
+        respDto response = new respDto();
+        response.setMessage("Users found");
+        response.setCode("200");
+        response.setData(userService.getAllUsers());
+        return ResponseEntity.ok(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<respDto> handleException(Exception e) {
         respDto response = new respDto();
