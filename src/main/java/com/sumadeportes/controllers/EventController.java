@@ -24,7 +24,7 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<respDto> createEvents(@RequestBody List<EventDto> events) {
+    public ResponseEntity<respDto> createEvents(@RequestBody EventDto events) {
         respDto response = new respDto();
         try {
             List<Event> eventsSaved = eventService.saveEvents(events);

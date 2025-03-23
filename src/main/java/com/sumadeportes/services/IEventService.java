@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IEventService {
     List<Event> getAllEvents();
-    List<Event> saveEvents(List<EventDto> events);
+    List<Event> saveEvents(EventDto events);
 }

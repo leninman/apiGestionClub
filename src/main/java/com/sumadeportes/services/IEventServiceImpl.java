@@ -22,7 +22,7 @@ public class IEventServiceImpl implements IEventService {
 
     private final TestRepository testRepository;
 
-    private String eventName;
+
 
     public IEventServiceImpl(EventRepository eventRepository, TournamentRepository tournamentRepository, TestRepository testRepository) {
         this.eventRepository = eventRepository;
@@ -36,40 +36,25 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> saveEvents(List<EventDto> eventsIn) {
+    public List<Event> saveEvents(EventDto eventsIn) {
 
         List<Event> events = new ArrayList<>();
         int eventCounter=0;
-        for(EventDto e : eventsIn){
+        Tournament tournament =tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(eventsIn.getTournamentName(),eventsIn.getStartDate(),eventsIn.getEndDate());
+        List<String> testsNames = eventsIn.getEventsNames();
+        for(String testName : testsNames){
             Event eventToRegister = new Event();
-            Tournament tournament =tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(e.getTournamentName(),e.getStartDate(),e.getEndDate());
-            List<Test> test=testRepository.findTestByGenderAndStartAgeAndEndAgeAndStyleAndLength(e.getGender(),e.getStartAge(),e.getEndAge(),e.getStyle(),e.getLength());
             eventToRegister.setTournament(tournament);
+            List<Test> test=testRepository.findTestByDescription(testName);
             eventToRegister.setTest(test.getFirst());
-
-
-            if(!Objects.equals(e.getStartAge(), e.getEndAge())) {
-                eventName = (e.getLength()) + " " + e.getStyle() + "," + e.getStartAge() + "-" + e.getEndAge() + " "+"Años" + "," + e.getGender();
-            }else{
-                eventName = (e.getLength()) + " " + e.getStyle() + "," + e.getStartAge() + " "+"Años" + "," + e.getGender();
-            }
+            eventToRegister.setName(testName);
             List<Event> eventRegistered=eventRepository.findEventByTournament(tournament);
             if(eventRegistered!=null){
                 eventCounter++;
             }
-
-            eventToRegister.setName(eventName);
             eventToRegister.setEventNumber(eventCounter);
-
             events.add(eventRepository.save(eventToRegister));
-
-
-
         }
-
-
-
-
         return events;
     }
 }
