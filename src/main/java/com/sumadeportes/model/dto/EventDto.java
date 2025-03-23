@@ -9,6 +9,7 @@ import org.springframework.cglib.core.Local;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,14 +19,14 @@ public class EventDto implements Serializable {
     @Serial
     private static final long serialVersionUID = -385078992205212237L;
 
-    private String gender;
-    private Integer startAge;
-    private Integer endAge;
-    private Integer length;
-    private String style;
+    //private String gender;
+   // private Integer startAge;
+   // private Integer endAge;
+   // private Integer length;
+   // private String style;
     private String tournamentName;
-    private Integer eventNumber;
-    private String eventName;
+   // private Integer eventNumber;
+    private List<String> eventsNames;
     private LocalDate startDate;
     private LocalDate endDate;
 
