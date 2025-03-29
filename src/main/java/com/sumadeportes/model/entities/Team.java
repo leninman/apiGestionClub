@@ -1,6 +1,7 @@
 package com.sumadeportes.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +26,14 @@ public class Team implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String teamName;
+
+    @OneToMany(mappedBy = "team")
+    @JsonIgnore
+    private List<TournamentTeam> tournamentTeams=new ArrayList<>();
+
+    @OneToMany(mappedBy = "team")
+    @JsonIgnore
+    private List<Swimmer> swimmers=new ArrayList<>();
 
 
 

@@ -1,16 +1,19 @@
 package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.EventDto;
+import com.sumadeportes.model.dto.EventResponseDto;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.model.entities.Event;
-import com.sumadeportes.model.entities.UserEntity;
+import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.services.IEventService;
+import com.sumadeportes.services.ITournamentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/events")
@@ -19,18 +22,21 @@ public class EventController {
 
     private final IEventService eventService;
 
-    public EventController(IEventService eventService) {
+    private final ITournamentService tournamentService;
+
+    public EventController(IEventService eventService, ITournamentService tournamentService) {
         this.eventService = eventService;
+        this.tournamentService = tournamentService;
     }
 
     @PostMapping("/create")
     public ResponseEntity<respDto> createEvents(@RequestBody EventDto events) {
         respDto response = new respDto();
         try {
-            List<Event> eventsSaved = eventService.saveEvents(events);
+            eventService.saveEvents(events);
             response.setMessage("Events saved successfully");
             response.setCode("201");
-            response.setData(eventsSaved);
+            //response.setData(eventsSaved);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             response.setMessage("Error saving events");
@@ -38,6 +44,42 @@ public class EventController {
             response.setData(null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+    }
+    @GetMapping("/getListByDate")
+    public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
+
+        respDto respDto = new respDto();
+        List<Event> eventsList=new ArrayList<>();
+        List<EventResponseDto> eventsResponsesDtos=new ArrayList<>();
+
+        List<Tournament> tournaments = tournamentService.getTournamentsByDate(date);
+        for (Tournament tournament : tournaments) {
+            List<Event> events=eventService.getEventsByGenderAgeTournament(gender,age,tournament.getTournamentName());
+            eventsList.addAll(events);
+        }
+
+        for (Event event : eventsList) {
+            EventResponseDto eventResponseDto = new EventResponseDto();
+            eventResponseDto.setId(event.getId());
+            eventResponseDto.setEventName(event.getName());
+            eventResponseDto.setEventNumber(event.getEventNumber());
+            eventResponseDto.setTournamentName(event.getTournament().getTournamentName());
+            eventResponseDto.setStartDate(event.getTournament().getStartDate());
+            eventResponseDto.setEndDate(event.getTournament().getEndDate());
+            eventResponseDto.setGender(event.getTest().getGender());
+            eventResponseDto.setStyle(event.getTest().getStyle());
+            eventResponseDto.setLength(event.getTest().getLength());
+            eventResponseDto.setStartAge(event.getTest().getStartAge());
+            eventResponseDto.setEndAge(event.getTest().getEndAge());
+            eventsResponsesDtos.add(eventResponseDto);
+
+
+
+
+        }
+        respDto.setData(eventsResponsesDtos);
+        return ResponseEntity.ok(respDto);
 
     }
 

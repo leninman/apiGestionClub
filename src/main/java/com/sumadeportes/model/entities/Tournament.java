@@ -1,5 +1,6 @@
 package com.sumadeportes.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,8 +30,15 @@ public class Tournament implements Serializable {
    private LocalDate startDate;
    private LocalDate endDate;
 
- // @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, orphanRemoval = true)
-  //  private List<Event> events;
+  @OneToMany(mappedBy = "tournament")
+  private List<Event> events=new ArrayList<>();
+
+    @OneToMany(mappedBy = "tournament")
+    @JsonManagedReference
+    private List<TournamentTeam> tournamentTeams=new ArrayList<>();
+
+
+
 
 
     public Tournament(String tournament, LocalDate startDate, LocalDate endDate) {

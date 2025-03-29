@@ -31,21 +31,12 @@ public class SwimmerDto implements Serializable {
     private String email;
     private String swimmerKey;
     private String status;
-    private Integer yearsActive;
-    private Integer monthsActive;
-    private Integer daysActive;
     private String representorName;
     private String representorSurename;
     private String phone;
-    private String plain;
-    private String level;
-    private String monday;
-    private String tuesday;
-    private String wednesday;
-    private String thursday;
-    private String friday;
-    private String saturday;
     private String team;
+    private String clientCode;
+    private String category;
     
     
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class IEventServiceImpl implements IEventService {
@@ -36,25 +37,38 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> saveEvents(EventDto eventsIn) {
+    public void saveEvents(EventDto eventsIn) {
+        Integer eventCounter = 1;
+        Tournament tournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(
+                eventsIn.getTournamentName(), eventsIn.getStartDate(), eventsIn.getEndDate());
+        List<Event> tournamentsEvents = eventRepository.findEventByTournament(tournament);
 
-        List<Event> events = new ArrayList<>();
-        int eventCounter=0;
-        Tournament tournament =tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(eventsIn.getTournamentName(),eventsIn.getStartDate(),eventsIn.getEndDate());
+        if (!tournamentsEvents.isEmpty()) {
+            eventCounter = tournamentsEvents.stream()
+                    .map(Event::getEventNumber)
+                    .max(Integer::compare)
+                    .orElse(0) + 1; // Incrementar el valor máximo encontrado
+        }
+
         List<String> testsNames = eventsIn.getEventsNames();
-        for(String testName : testsNames){
+        for (String testName : testsNames) {
             Event eventToRegister = new Event();
             eventToRegister.setTournament(tournament);
-            List<Test> test=testRepository.findTestByDescription(testName);
-            eventToRegister.setTest(test.getFirst());
+            Test test = testRepository.findTestByDescription(testName).get(0);
+            eventToRegister.setTest(test);
             eventToRegister.setName(testName);
-            List<Event> eventRegistered=eventRepository.findEventByTournament(tournament);
-            if(eventRegistered!=null){
-                eventCounter++;
-            }
-            eventToRegister.setEventNumber(eventCounter);
-            events.add(eventRepository.save(eventToRegister));
+            eventToRegister.setEventNumber(eventCounter++);
+            eventRepository.save(eventToRegister);
         }
-        return events;
+    }
+
+    @Override
+    public List<Event> getEventsByTournament(Tournament tournament) {
+        return eventRepository.findEventByTournament(tournament);
+    }
+
+    @Override
+    public List<Event> getEventsByGenderAgeTournament(String gender,Integer age,String tournament) {
+        return eventRepository.findAllWithTournamentAndTeams(gender,age,tournament);
     }
 }

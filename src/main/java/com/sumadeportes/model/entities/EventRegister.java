@@ -25,9 +25,7 @@ public class EventRegister implements Serializable {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament_id", nullable = false)
-    private Tournament tournament;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
@@ -38,6 +36,8 @@ public class EventRegister implements Serializable {
 
 
 
-    private Long  swimmerNumber;
+    private String  swimmerNumber;
+
+    private Double mark;
 
 }
