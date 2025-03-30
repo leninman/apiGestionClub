@@ -4,6 +4,7 @@ import com.sumadeportes.model.dto.EventRegisterDto;
 import com.sumadeportes.model.entities.*;
 import com.sumadeportes.model.repositories.EventRegisterRepository;
 import com.sumadeportes.model.repositories.EventRepository;
+import com.sumadeportes.model.repositories.MarkRepository;
 import com.sumadeportes.model.repositories.TournamentTeamRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,14 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     private final ISwimmerService swimmerService;
     private final EventRegisterRepository eventRegisterRepository;
     private final TournamentTeamRepository tournamentTeamRepository;
+    private final MarkRepository markRepository;
 
-    public IEventRegisterServiceImpl(EventRepository eventRepository, ISwimmerService swimmerService, EventRegisterRepository eventRegisterRepository, TournamentTeamRepository tournamentTeamRepository) {
+    public IEventRegisterServiceImpl(EventRepository eventRepository, ISwimmerService swimmerService, EventRegisterRepository eventRegisterRepository, TournamentTeamRepository tournamentTeamRepository, MarkRepository markRepository) {
         this.eventRepository = eventRepository;
         this.swimmerService = swimmerService;
         this.eventRegisterRepository = eventRegisterRepository;
         this.tournamentTeamRepository = tournamentTeamRepository;
+        this.markRepository = markRepository;
     }
 
     @Override
@@ -70,6 +73,10 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             String  swimmerNumberFormatted= String.format("%04d", swimmerNumber);
             String concat= teamNumber + swimmerNumberFormatted;
             eventRegisterToSave.setSwimmerNumber(concat);
+            if(swimmer.isPresent()) {
+                Float mark=getMark(swimmer.get(),e);
+                eventRegisterToSave.setMark(mark);
+            }
             EventRegister eventregisterSaved=eventRegisterRepository.save(eventRegisterToSave);
             eventsRegisteredSaved.add(eventregisterSaved);
         }
@@ -89,6 +96,17 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
 
     @Override
     public void deleteEventRegister(Long id) {
+
+    }
+
+    public Float getMark(Swimmer swimmer, Event event) {
+
+        return markRepository.findMarkByEventAndSwimmer(event, swimmer)
+                .stream()
+                .map(Mark::getMark)
+                .min(Float::compareTo)
+                .orElse(0F);
+
 
     }
 }

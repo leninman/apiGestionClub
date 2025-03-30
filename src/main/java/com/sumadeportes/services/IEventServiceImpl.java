@@ -54,7 +54,7 @@ public class IEventServiceImpl implements IEventService {
         for (String testName : testsNames) {
             Event eventToRegister = new Event();
             eventToRegister.setTournament(tournament);
-            Test test = testRepository.findTestByDescription(testName).get(0);
+            Test test = testRepository.findTestByDescription(testName).getFirst();
             eventToRegister.setTest(test);
             eventToRegister.setName(testName);
             eventToRegister.setEventNumber(eventCounter++);
