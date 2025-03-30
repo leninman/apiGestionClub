@@ -28,8 +28,8 @@ public class SwimmerMapper {
                 swimmer.getRepresentorSurename(),
                 swimmer.getPhone(),
                 swimmer.getTeam().getTeamName(),
-                swimmer.getClientCode(),
-                swimmer.getCategory()
+                swimmer.getClientCode()
+
 
                 );
 
@@ -56,7 +56,6 @@ public class SwimmerMapper {
             swimmer.setRepresentorSurename(swimmerDto.getRepresentorSurename());
             swimmer.setPhone(swimmerDto.getPhone());
             swimmer.setClientCode(swimmerDto.getDocumentNumber());
-            swimmer.setCategory(swimmerDto.getCategory());
         return swimmer;
     }
 }

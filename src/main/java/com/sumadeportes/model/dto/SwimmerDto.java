@@ -36,7 +36,7 @@ public class SwimmerDto implements Serializable {
     private String phone;
     private String team;
     private String clientCode;
-    private String category;
+
     
     
 }

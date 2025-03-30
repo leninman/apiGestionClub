@@ -39,7 +39,7 @@ public class Swimmer implements Serializable {
     private String representorSurename;
     private String phone;
     private String clientCode;
-    private String category;
+
 
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
