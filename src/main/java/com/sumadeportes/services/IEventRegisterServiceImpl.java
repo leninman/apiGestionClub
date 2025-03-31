@@ -1,11 +1,9 @@
 package com.sumadeportes.services;
 
 import com.sumadeportes.model.dto.EventRegisterDto;
+import com.sumadeportes.model.dto.EventsMarks;
 import com.sumadeportes.model.entities.*;
-import com.sumadeportes.model.repositories.EventRegisterRepository;
-import com.sumadeportes.model.repositories.EventRepository;
-import com.sumadeportes.model.repositories.MarkRepository;
-import com.sumadeportes.model.repositories.TournamentTeamRepository;
+import com.sumadeportes.model.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,13 +16,15 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     private final EventRegisterRepository eventRegisterRepository;
     private final TournamentTeamRepository tournamentTeamRepository;
     private final MarkRepository markRepository;
+    private final TournamentRepository tournamentRepository;
 
-    public IEventRegisterServiceImpl(EventRepository eventRepository, ISwimmerService swimmerService, EventRegisterRepository eventRegisterRepository, TournamentTeamRepository tournamentTeamRepository, MarkRepository markRepository) {
+    public IEventRegisterServiceImpl(EventRepository eventRepository, ISwimmerService swimmerService, EventRegisterRepository eventRegisterRepository, TournamentTeamRepository tournamentTeamRepository, MarkRepository markRepository, TournamentRepository tournamentRepository) {
         this.eventRepository = eventRepository;
         this.swimmerService = swimmerService;
         this.eventRegisterRepository = eventRegisterRepository;
         this.tournamentTeamRepository = tournamentTeamRepository;
         this.markRepository = markRepository;
+        this.tournamentRepository = tournamentRepository;
     }
 
     @Override
@@ -36,7 +36,13 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
         Team team=new Team();
         List<EventRegister> eventsRegisteredSaved=new ArrayList<>();
 
-        List<Event> events=eventRegisterDto.getEventsNames().stream().map(eventRepository::findEventByName).toList();
+        // Get the tournament from the event
+        Tournament tournamentSaved=tournamentRepository.findTournamentByName(eventRegisterDto.getTournamentName());
+
+
+       // List<Event> events=eventRegisterDto.getEventsNames().stream().map(eventRepository::findEventByName).toList();
+        List<Event> events=eventRegisterDto.getEventsMarks().stream().map(x->eventRepository.findEventByNameAndTournament(x.getEventName(),tournamentSaved)).toList();
+
         Event event1=events.getFirst();
         tournament=event1.getTournament();
 
@@ -73,10 +79,11 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             String  swimmerNumberFormatted= String.format("%04d", swimmerNumber);
             String concat= teamNumber + swimmerNumberFormatted;
             eventRegisterToSave.setSwimmerNumber(concat);
-            if(swimmer.isPresent()) {
-                Float mark=getMark(swimmer.get(),e);
-                eventRegisterToSave.setMark(mark);
-            }
+            //Set the marke to every event
+            eventRegisterToSave.setMark(String.valueOf(eventRegisterDto.getEventsMarks().stream()
+                    .map(EventsMarks::getMark)
+                    .findFirst()
+                    .orElse("0")));
             EventRegister eventregisterSaved=eventRegisterRepository.save(eventRegisterToSave);
             eventsRegisteredSaved.add(eventregisterSaved);
         }
@@ -99,14 +106,5 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
 
     }
 
-    public Float getMark(Swimmer swimmer, Event event) {
 
-        return markRepository.findMarkByEventAndSwimmer(event, swimmer)
-                .stream()
-                .map(Mark::getMark)
-                .min(Float::compareTo)
-                .orElse(0F);
-
-
-    }
 }

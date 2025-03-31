@@ -38,6 +38,6 @@ public class EventRegister implements Serializable {
 
     private String  swimmerNumber;
 
-    private Float mark;
+    private String mark;
 
 }

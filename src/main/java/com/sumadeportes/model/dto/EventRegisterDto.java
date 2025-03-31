@@ -19,6 +19,7 @@ public class EventRegisterDto {
 
     private String swimmerDocumentType;
     private String swimmerDocumentNumber;
-    private List<String> eventsNames;
+    private String tournamentName;
+    private List<EventsMarks> eventsMarks;
 
 }

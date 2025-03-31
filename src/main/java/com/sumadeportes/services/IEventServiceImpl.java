@@ -71,4 +71,9 @@ public class IEventServiceImpl implements IEventService {
     public List<Event> getEventsByGenderAgeTournament(String gender,Integer age,String tournament) {
         return eventRepository.findAllWithTournamentAndTeams(gender,age,tournament);
     }
+
+    @Override
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElse(null);
+    }
 }

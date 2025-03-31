@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
     List<Event> findEventByTournament(Tournament tournament);
-    Event findEventByName(String name);
+    Event findEventByNameAndTournament(String name, Tournament tournament);
 
     @Query(value="SELECT e.* FROM events e " +
             "INNER JOIN tournaments t ON e.tournament_id = t.id " +

@@ -14,5 +14,6 @@ public interface IEventService {
     List<Event> getEventsByTournament(Tournament tournament);
 
     List<Event> getEventsByGenderAgeTournament(String gender, Integer age, String tournament);
+    Event getEventById(Long id);
 }
 

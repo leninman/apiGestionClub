@@ -30,10 +30,10 @@ public class Mark implements Serializable {
     private Swimmer swimmer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    @JoinColumn(name = "test_id", nullable = false)
+    private Test test;
 
-    private Float mark;
+    private String mark;
 
 
 
