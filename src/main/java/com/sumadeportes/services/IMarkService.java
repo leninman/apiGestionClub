@@ -8,5 +8,5 @@ import com.sumadeportes.model.entities.Test;
 import java.util.List;
 
 public interface IMarkService {
-    Float getMarkByEvent(Swimmer swimmer, Test test);
+    String getMarkByEvent(Swimmer swimmer, Test test);
 }

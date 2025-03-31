@@ -33,7 +33,7 @@ public class MarkController {
     @GetMapping("/getMark/{testId}")
     public ResponseEntity<respDto> getMarkByEvent(@RequestBody PersonId swimmerId, @PathVariable Long testId) {
         respDto response = new respDto();
-        Float mark = 0F;
+        String mark = "";
         Optional<Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
         Test test = testService.getTestById(testId);
         if (swimmer.isPresent()) {
