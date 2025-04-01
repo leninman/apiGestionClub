@@ -2,6 +2,7 @@ package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.EventDto;
 import com.sumadeportes.model.dto.EventResponseDto;
+import com.sumadeportes.model.dto.EventsResponse;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.Tournament;
@@ -51,7 +52,12 @@ public class EventController {
 
         respDto respDto = new respDto();
         List<Event> eventsList=new ArrayList<>();
-        List<EventResponseDto> eventsResponsesDtos=new ArrayList<>();
+      //  List<EventResponseDto> eventsResponsesDtos=new ArrayList<>();
+        List<EventsResponse> eventsResponses=new ArrayList<>();
+        List<String> tournamentsName=new ArrayList<>();
+        List<String> eventName=new ArrayList<>();
+
+
 
         List<Tournament> tournaments = tournamentService.getTournamentsByDate(date);
         for (Tournament tournament : tournaments) {
@@ -60,25 +66,36 @@ public class EventController {
         }
 
         for (Event event : eventsList) {
-            EventResponseDto eventResponseDto = new EventResponseDto();
-            eventResponseDto.setId(event.getId());
-            eventResponseDto.setEventName(event.getName());
-            eventResponseDto.setEventNumber(event.getEventNumber());
-            eventResponseDto.setTournamentName(event.getTournament().getTournamentName());
-            eventResponseDto.setStartDate(event.getTournament().getStartDate());
-            eventResponseDto.setEndDate(event.getTournament().getEndDate());
-            eventResponseDto.setGender(event.getTest().getGender());
-            eventResponseDto.setStyle(event.getTest().getStyle());
-            eventResponseDto.setLength(event.getTest().getLength());
-            eventResponseDto.setStartAge(event.getTest().getStartAge());
-            eventResponseDto.setEndAge(event.getTest().getEndAge());
-            eventsResponsesDtos.add(eventResponseDto);
+            tournamentsName.add(event.getTournament().getTournamentName());
+            eventName.add(event.getName());
+            EventsResponse eventsResponse=new EventsResponse();
+            eventsResponse.setDate(date.getDayOfMonth());
+            eventsResponse.setEventName(eventName);
+            eventsResponse.setTournamentsName(tournamentsName);
+            eventsResponses.add(eventsResponse);
+
+
+
+
+           // EventResponseDto eventResponseDto = new EventResponseDto();
+           // eventResponseDto.setId(event.getId());
+          //  eventResponseDto.setEventName(event.getName());
+         //   eventResponseDto.setEventNumber(event.getEventNumber());
+         //   eventResponseDto.setTournamentName(event.getTournament().getTournamentName());
+         //   eventResponseDto.setStartDate(event.getTournament().getStartDate());
+       //     eventResponseDto.setEndDate(event.getTournament().getEndDate());
+        //    eventResponseDto.setGender(event.getTest().getGender());
+       //     eventResponseDto.setStyle(event.getTest().getStyle());
+         //   eventResponseDto.setLength(event.getTest().getLength());
+       //     eventResponseDto.setStartAge(event.getTest().getStartAge());
+        //    eventResponseDto.setEndAge(event.getTest().getEndAge());
+       //     eventsResponsesDtos.add(eventResponseDto);
 
 
 
 
         }
-        respDto.setData(eventsResponsesDtos);
+        respDto.setData(eventsResponses);
         return ResponseEntity.ok(respDto);
 
     }
