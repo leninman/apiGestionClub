@@ -52,7 +52,7 @@ public class SwimmerController {
         }
     }
 
-    @GetMapping("/getById")
+    @PostMapping("/getById")
     public ResponseEntity<respDto> getById(@RequestBody PersonId swimmerId) {
         Optional<Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
         respDto response = new respDto();
