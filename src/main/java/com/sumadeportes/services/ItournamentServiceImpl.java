@@ -44,6 +44,11 @@ public class ItournamentServiceImpl implements ITournamentService {
     }
 
     @Override
+    public List<Tournament> gestTournamentsByMonth(int month) {
+        return tournamentRepository.findTournamentsByMonth(month);
+    }
+
+    @Override
     @Transactional
     public Tournament createTournament(String tournament, LocalDate startDate,LocalDate endDate,List<String> teamNames,Integer teamNumber) {
         Tournament savedTournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(tournament,startDate,endDate);

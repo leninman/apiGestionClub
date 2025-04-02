@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/events")
@@ -48,55 +50,36 @@ public class EventController {
 
     }
     @GetMapping("/getListByDate")
-    public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
-
+   // public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
+    public ResponseEntity<respDto> getAllEventsByDate(@RequestParam int month,String gender,Integer age) {
         respDto respDto = new respDto();
-        List<Event> eventsList=new ArrayList<>();
-      //  List<EventResponseDto> eventsResponsesDtos=new ArrayList<>();
-        List<EventsResponse> eventsResponses=new ArrayList<>();
-        List<String> tournamentsName=new ArrayList<>();
-        List<String> eventName=new ArrayList<>();
+        List<Event> eventsList = new ArrayList<>();
+        Map<Integer, EventsResponse> eventsResponseMap = new HashMap<>();
 
-
-
-        List<Tournament> tournaments = tournamentService.getTournamentsByDate(date);
+        List<Tournament> tournaments = tournamentService.gestTournamentsByMonth(month);
         for (Tournament tournament : tournaments) {
-            List<Event> events=eventService.getEventsByGenderAgeTournament(gender,age,tournament.getTournamentName());
+            List<Event> events = eventService.getEventsByGenderAgeTournament(gender, age, tournament.getTournamentName());
             eventsList.addAll(events);
         }
 
         for (Event event : eventsList) {
-            tournamentsName.add(event.getTournament().getTournamentName());
-            eventName.add(event.getName());
-            EventsResponse eventsResponse=new EventsResponse();
-            eventsResponse.setDate(date.getDayOfMonth());
-            eventsResponse.setEventName(eventName);
-            eventsResponse.setTournamentsName(tournamentsName);
-            eventsResponses.add(eventsResponse);
-
-
-
-
-           // EventResponseDto eventResponseDto = new EventResponseDto();
-           // eventResponseDto.setId(event.getId());
-          //  eventResponseDto.setEventName(event.getName());
-         //   eventResponseDto.setEventNumber(event.getEventNumber());
-         //   eventResponseDto.setTournamentName(event.getTournament().getTournamentName());
-         //   eventResponseDto.setStartDate(event.getTournament().getStartDate());
-       //     eventResponseDto.setEndDate(event.getTournament().getEndDate());
-        //    eventResponseDto.setGender(event.getTest().getGender());
-       //     eventResponseDto.setStyle(event.getTest().getStyle());
-         //   eventResponseDto.setLength(event.getTest().getLength());
-       //     eventResponseDto.setStartAge(event.getTest().getStartAge());
-        //    eventResponseDto.setEndAge(event.getTest().getEndAge());
-       //     eventsResponsesDtos.add(eventResponseDto);
-
-
-
-
+            LocalDate startDate = event.getTournament().getStartDate();
+            LocalDate endDate = event.getTournament().getEndDate();
+            while (!startDate.isAfter(endDate)) {
+                int dayOfMonth = startDate.getDayOfMonth();
+                EventsResponse eventsResponse = eventsResponseMap.getOrDefault(dayOfMonth, new EventsResponse(dayOfMonth, new ArrayList<>(), new ArrayList<>()));
+                eventsResponse.getEventName().add(event.getName());
+                eventsResponse.getTournamentsName().add(event.getTournament().getTournamentName());
+                eventsResponseMap.put(dayOfMonth, eventsResponse);
+                startDate = startDate.plusDays(1);
+            }
         }
-        respDto.setData(eventsResponses);
+
+        respDto.setData(new ArrayList<>(eventsResponseMap.values()));
         return ResponseEntity.ok(respDto);
+
+
+
 
     }
 
