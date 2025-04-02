@@ -74,6 +74,8 @@ public class EventController {
                 startDate = startDate.plusDays(1);
             }
         }
+        respDto.setCode("200");
+        respDto.setMessage("Events found");
 
         respDto.setData(new ArrayList<>(eventsResponseMap.values()));
         return ResponseEntity.ok(respDto);

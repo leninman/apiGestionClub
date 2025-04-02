@@ -39,8 +39,14 @@ public class IEventServiceImpl implements IEventService {
     @Override
     public void saveEvents(EventDto eventsIn) {
         Integer eventCounter = 1;
+        String tournamentName = eventsIn.getTournamentName();
+        String keyWord=" desde";
+        int ind=tournamentName.indexOf(keyWord);
+        if(ind!=-1){
+            tournamentName=tournamentName.substring(0,ind);
+        }
         Tournament tournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(
-                eventsIn.getTournamentName(), eventsIn.getStartDate(), eventsIn.getEndDate());
+                tournamentName, eventsIn.getStartDate(), eventsIn.getEndDate());
         List<Event> tournamentsEvents = eventRepository.findEventByTournament(tournament);
 
         if (!tournamentsEvents.isEmpty()) {
