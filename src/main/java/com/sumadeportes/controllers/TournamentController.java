@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ public class TournamentController {
     public ResponseEntity<respDto> getAllTournaments() {
 
         respDto respDto = new respDto();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         List<Tournament> tournaments = tournamentService.getTournaments();
         if (tournaments.isEmpty()) {
@@ -41,11 +43,15 @@ public class TournamentController {
             respDto.setData(null);
             return new ResponseEntity<>(respDto, HttpStatus.NOT_FOUND);
         }
-        List<TournamentResponse> tournamentResponses = tournaments.stream().map(tournament -> new TournamentResponse(tournament.getId(),tournament.getTournamentName(),tournament.getStartDate(),tournament.getEndDate())).toList();
+        List<TournamentResponse> tournamentResponses = tournaments.stream().map(tournament -> {
+            String startDateFormatted = tournament.getStartDate().format(formatter);
+            String endDateFormatted = tournament.getEndDate().format(formatter);
+            String tournamentNameWithDates = tournament.getTournamentName() + " desde " + startDateFormatted + " hasta " + endDateFormatted;
+            return new TournamentResponse(tournament.getId(), tournamentNameWithDates, tournament.getStartDate(), tournament.getEndDate());
+        }).toList();
         respDto.setCode("200");
         respDto.setData(tournamentResponses);
         return ResponseEntity.ok(respDto);
-
     }
 
     @GetMapping("/getTournamentsTeamsList")
