@@ -3,11 +3,8 @@ package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.dto.respDto;
-import com.sumadeportes.model.entities.PersonId;
 import com.sumadeportes.model.entities.UserEntity;
-import com.sumadeportes.model.mapper.UserMapper;
 import com.sumadeportes.services.EmailService;
-import com.sumadeportes.services.ISwimmerService;
 import com.sumadeportes.services.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,6 @@ package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.ChangePasswordRequestDto;
 import com.sumadeportes.model.dto.LoginRequestDto;
-import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.model.mapper.UserMapper;

@@ -2,7 +2,6 @@ package com.sumadeportes.model.mapper;
 
 import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.entities.PersonId;
-import com.sumadeportes.model.entities.RoleEntity;
 import com.sumadeportes.model.entities.UserEntity;
 
 
