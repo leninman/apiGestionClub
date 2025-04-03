@@ -13,6 +13,7 @@ import com.sumadeportes.services.ITestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,14 +31,15 @@ public class MarkController {
         this.testService = testService;
     }
 
-    @GetMapping("/getMark/{testId}")
-    public ResponseEntity<respDto> getMarkByEvent(@RequestBody PersonId swimmerId, @PathVariable Long testId) {
+    @GetMapping("/getMark/{testDescription}")
+    public ResponseEntity<respDto> getMarkByEvent(@RequestBody PersonId swimmerId, @PathVariable String testDescription) {
         respDto response = new respDto();
         String mark = "";
         Optional<Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
-        Test test = testService.getTestById(testId);
+        //Test test = testService.getTestById(testId);
+        List<Test> tests = testService.getTestsByDescription(testDescription);
         if (swimmer.isPresent()) {
-            mark = markService.getMarkByEvent(swimmer.get(), test);
+            mark = markService.getMarkByEvent(swimmer.get(), tests.getFirst());
         }
 
         response.setMessage("Marks found");

@@ -30,65 +30,53 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     @Override
     public List<EventRegister> saveEventRegister(EventRegisterDto eventRegisterDto) {
 
-        Long swimmerNumber=0L;
-        Integer teamNumber= 0;
-        Tournament tournament;
-        Team team=new Team();
-        List<EventRegister> eventsRegisteredSaved=new ArrayList<>();
+        long swimmerNumber = 0L;
+        Integer teamNumber = 0;
+        Team team = new Team();
+        List<EventRegister> eventsRegisteredSaved = new ArrayList<>();
 
-        // Get the tournament from the event
-        Tournament tournamentSaved=tournamentRepository.findTournamentByName(eventRegisterDto.getTournamentName());
-
-
-       // List<Event> events=eventRegisterDto.getEventsNames().stream().map(eventRepository::findEventByName).toList();
-        List<Event> events=eventRegisterDto.getEventsMarks().stream().map(x->eventRepository.findEventByNameAndTournament(x.getEventName(),tournamentSaved)).toList();
-
-        Event event1=events.getFirst();
-        tournament=event1.getTournament();
-
-        Optional<Swimmer> swimmer=swimmerService.getSwimmerById(new PersonId(eventRegisterDto.getSwimmerDocumentType(),eventRegisterDto.getSwimmerDocumentNumber()));
-        // Check if swimmer is present
-        // And get the team of the swimmer
-        if(swimmer.isPresent()) {
-            team=swimmer.get().getTeam();
+        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
+        if (swimmer.isPresent()) {
+            team = swimmer.get().getTeam();
         }
-        //Get the team number in the TournamentsTeams
-        TournamentTeam tournamentTeam=tournamentTeamRepository.findTournamentTeamByTournamentAndTeam(tournament,team);
-        teamNumber=tournamentTeam.getTeamPosition();
 
+        for (EventsMarks eventMark : eventRegisterDto.getEventsMarks()) {
+            String tournamentName = eventMark.getTournamentName();
+            Tournament tournamentSaved = tournamentRepository.findTournamentByName(tournamentName);
+            Event event = eventRepository.findEventByNameAndTournament(eventMark.getEventName(), tournamentSaved);
 
-        for(Event e:events) {
-            EventRegister eventRegisterToSave=new EventRegister();
+            TournamentTeam tournamentTeam = tournamentTeamRepository.findTournamentTeamByTournamentAndTeam(tournamentSaved, team);
+            teamNumber = tournamentTeam.getTeamPosition();
+
+            EventRegister eventRegisterToSave = new EventRegister();
             swimmer.ifPresent(eventRegisterToSave::setSwimmer);
-            eventRegisterToSave.setEvent(e);
-            List<EventRegister> eventsRegistered=eventRegisterRepository.findEventRegisterByEvent(e);
-            if(!eventsRegistered.isEmpty()) {
-                List<Integer> swimmerNumbers=new ArrayList<>();
-                for(EventRegister eventRegistered:eventsRegistered) {
+            eventRegisterToSave.setEvent(event);
+            List<EventRegister> eventsRegistered = eventRegisterRepository.findEventRegisterByEvent(event);
+            if (!eventsRegistered.isEmpty()) {
+                List<Integer> swimmerNumbers = new ArrayList<>();
+                for (EventRegister eventRegistered : eventsRegistered) {
                     String swimmerNumberString = eventRegistered.getSwimmerNumber();
                     String stringPart = swimmerNumberString.substring(1);
                     Integer partInt = Integer.parseInt(stringPart);
                     swimmerNumbers.add(partInt);
                 }
-                Long biggestValue= Long.valueOf(Collections.max(swimmerNumbers));
+                Long biggestValue = Long.valueOf(Collections.max(swimmerNumbers));
                 swimmerNumber = biggestValue + 1;
-            }else{
-                swimmerNumber=1L;
+            } else {
+                swimmerNumber = 1L;
             }
 
-            String  swimmerNumberFormatted= String.format("%04d", swimmerNumber);
-            String concat= teamNumber + swimmerNumberFormatted;
+            String swimmerNumberFormatted = String.format("%04d", swimmerNumber);
+            String concat = teamNumber + swimmerNumberFormatted;
             eventRegisterToSave.setSwimmerNumber(concat);
-            //Set the marke to every event
-            eventRegisterToSave.setMark(String.valueOf(eventRegisterDto.getEventsMarks().stream()
-                    .map(EventsMarks::getMark)
-                    .findFirst()
-                    .orElse("0")));
-            EventRegister eventregisterSaved=eventRegisterRepository.save(eventRegisterToSave);
+
+            // Establecer la marca para cada evento
+            eventRegisterToSave.setMark(String.valueOf(eventMark.getMark()));
+            EventRegister eventregisterSaved = eventRegisterRepository.save(eventRegisterToSave);
             eventsRegisteredSaved.add(eventregisterSaved);
         }
 
-        return  eventsRegisteredSaved;
+        return eventsRegisteredSaved;
     }
 
     @Override

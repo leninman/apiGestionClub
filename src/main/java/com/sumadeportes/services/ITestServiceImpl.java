@@ -28,4 +28,9 @@ public class ITestServiceImpl implements ITestService {
         return testRepository.findById(testId)
                 .orElseThrow(() -> new RuntimeException("Test not found with id: " + testId));
     }
+
+    @Override
+    public List<Test> getTestsByDescription(String description) {
+        return testRepository.findTestByDescription(description);
+    }
 }

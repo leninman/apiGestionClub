@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EventsMarks {
+    private String tournamentName;
     private String eventName;
     private String mark;
 }
