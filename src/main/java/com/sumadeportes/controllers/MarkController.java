@@ -1,6 +1,7 @@
 package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.EventResponseDto;
+import com.sumadeportes.model.dto.MarkRequest;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.PersonId;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/mark")
+@CrossOrigin(origins = "https://erika-github.github.io")
 public class MarkController {
     private final IMarkService markService;
     private final ISwimmerService swimmerService;
@@ -31,13 +33,13 @@ public class MarkController {
         this.testService = testService;
     }
 
-    @GetMapping("/getMark/{testDescription}")
-    public ResponseEntity<respDto> getMarkByEvent(@RequestBody PersonId swimmerId, @PathVariable String testDescription) {
+    @PostMapping("/getMark")
+    public ResponseEntity<respDto> getMarkByEvent(@RequestBody MarkRequest markRequest) {
         respDto response = new respDto();
         String mark = "";
-        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
+        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(markRequest.getSwimmerId());
         //Test test = testService.getTestById(testId);
-        List<Test> tests = testService.getTestsByDescription(testDescription);
+        List<Test> tests = testService.getTestsByDescription(markRequest.getTeamDescription());
         if (swimmer.isPresent()) {
             mark = markService.getMarkByEvent(swimmer.get(), tests.getFirst());
         }
