@@ -80,6 +80,11 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     }
 
     @Override
+    public boolean isSwimmerRegistered(Event event, Swimmer swimmer) {
+        return eventRegisterRepository.existsByEventAndSwimmer(event, swimmer);
+    }
+
+    @Override
     public List<EventRegister> getAllEventRegisters() {
         return List.of();
     }

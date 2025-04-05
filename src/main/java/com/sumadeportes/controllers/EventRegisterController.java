@@ -1,10 +1,21 @@
 package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.EventRegisterDto;
+import com.sumadeportes.model.dto.EventsMarks;
 import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.entities.Event;
+import com.sumadeportes.model.entities.PersonId;
+import com.sumadeportes.model.entities.Swimmer;
+import com.sumadeportes.model.entities.Tournament;
+import com.sumadeportes.model.repositories.EventRepository;
+import com.sumadeportes.model.repositories.SwimmerRepository;
+import com.sumadeportes.model.repositories.TournamentRepository;
 import com.sumadeportes.services.IEventsRegisterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/eventsregister")
@@ -12,14 +23,43 @@ import org.springframework.web.bind.annotation.*;
 public class EventRegisterController {
 
      private final IEventsRegisterService eventRegisterService;
+    private final TournamentRepository tournamentRepository;
+    private final EventRepository eventRepository;
+    private final SwimmerRepository swimmerRepository;
 
-    public EventRegisterController(IEventsRegisterService eventRegisterService) {
+    public EventRegisterController(IEventsRegisterService eventRegisterService, TournamentRepository tournamentRepository, EventRepository eventRepository, SwimmerRepository swimmerRepository) {
         this.eventRegisterService = eventRegisterService;
+        this.tournamentRepository = tournamentRepository;
+        this.eventRepository = eventRepository;
+        this.swimmerRepository = swimmerRepository;
     }
     @PostMapping("/create")
     public ResponseEntity<respDto> saveEventRegister(@RequestBody EventRegisterDto eventRegisterDto) {
         respDto response = new respDto();
+        Optional<Swimmer> swimmer = swimmerRepository.findSwimmerBySwimmerId(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
+        if(swimmer.isEmpty()) {
+            response.setMessage("Swimmer not found");
+            response.setCode("404");
+            response.setData(new ArrayList<>());
+            return ResponseEntity.status(404).body(response);
+        }
         try {
+            for (EventsMarks eventMark : eventRegisterDto.getEventsMarks()) {
+                // Obtener el ID del evento basado en el nombre del torneo y el nombre del evento
+                Tournament tournament = tournamentRepository.findTournamentByName(eventMark.getTournamentName());
+                Event event = eventRepository.findEventByNameAndTournament(eventMark.getEventName(), tournament);
+
+                // Verificar si el nadador ya está inscrito en el evento
+                boolean isRegistered = eventRegisterService.isSwimmerRegistered(event,swimmer.get());
+                if (isRegistered) {
+                    response.setMessage("Swimmer is already registered for the event: " + eventMark.getEventName());
+                    response.setCode("409");
+                    return ResponseEntity.status(409).body(response);
+                }
+            }
+
+
+
             // Call the service to save the event register
              eventRegisterService.saveEventRegister(eventRegisterDto);
             response.setMessage("Event register saved successfully");
