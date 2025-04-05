@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -35,19 +36,19 @@ public class UserController {
             if (userEntity.isPresent()) {
                 response.setMessage("Email already exists");
                 response.setCode("409");
-                response.setData(userEntity);
+                response.setData(new ArrayList<>());
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
             UserEntity savedUser = userService.saveUser(userDto);
             emailService.sendPasswordEmail(savedUser.getEmail(), savedUser.getPassword());
             response.setMessage("User saved successfully and email sent with password");
             response.setCode("201");
-            response.setData(savedUser);
+            response.setData(new ArrayList<>());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             response.setMessage("Error saving user");
             response.setCode("500");
-            response.setData(null);
+            response.setData(new ArrayList<>());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
