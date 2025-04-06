@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GestionclubApiApplication  {
-
+//cambio para prueba de despligue
     public static void main(String[] args) {
 		SpringApplication.run(GestionclubApiApplication.class, args);
 	}
