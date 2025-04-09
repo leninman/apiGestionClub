@@ -49,7 +49,7 @@ public class EventController {
         }
 
     }
-    @GetMapping("/getListByDate")
+    @PostMapping("/getListByDate")
    // public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
     public ResponseEntity<respDto> getAllEventsByDate(@RequestParam int month,String gender,Integer age) {
         respDto respDto = new respDto();
@@ -86,7 +86,7 @@ public class EventController {
     }
 
 
-    @GetMapping("/getList")
+    @PostMapping("/getList")
     public List<Event> getAllEvents() {
         return eventService.getAllEvents();
     }
