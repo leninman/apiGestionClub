@@ -30,7 +30,7 @@ public class TournamentController {
         this.tournamentTeamService = tournamentTeamService;
     }
 
-    @GetMapping("/getList")
+    @PostMapping("/getList")
     public ResponseEntity<respDto> getAllTournaments() {
 
         respDto respDto = new respDto();
@@ -54,7 +54,7 @@ public class TournamentController {
         return ResponseEntity.ok(respDto);
     }
 
-    @GetMapping("/getTournamentsTeamsList")
+    @PostMapping("/getTournamentsTeamsList")
     public ResponseEntity<respDto> getAllTournamentsTeams() {
 
         respDto respDto = new respDto();

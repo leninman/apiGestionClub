@@ -71,7 +71,7 @@ public class SwimmerController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getList")
+    @PostMapping("/getList")
     public ResponseEntity<respDto> getList() {
         respDto response = new respDto();
         response.setMessage("Swimmers found");

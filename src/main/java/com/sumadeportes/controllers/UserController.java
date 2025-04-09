@@ -53,7 +53,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getByUser")
+    @PostMapping("/getByUser")
     public ResponseEntity<respDto> getById(@RequestParam String email) {
         respDto response = new respDto();
         try {
@@ -72,7 +72,7 @@ public class UserController {
 
 
 
-    @GetMapping("/getAll")
+    @PostMapping("/getAll")
     public ResponseEntity<respDto> getAllTeams() {
         respDto response = new respDto();
         response.setMessage("Users found");
