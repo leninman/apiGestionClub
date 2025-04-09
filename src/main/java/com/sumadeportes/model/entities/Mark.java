@@ -14,18 +14,13 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventRegister implements Serializable {
+@Table(name = "marks")
+public class Mark implements Serializable {
     @Serial
-    private static final long serialVersionUID = 6315667561109673365L;
+    private static final long serialVersionUID = -7954003939194965539L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
-
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
@@ -34,10 +29,12 @@ public class EventRegister implements Serializable {
     })
     private Swimmer swimmer;
 
-
-
-    private String  swimmerNumber;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id", nullable = false)
+    private Test test;
 
     private String mark;
+
+
 
 }

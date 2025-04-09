@@ -5,10 +5,7 @@ import com.sumadeportes.model.entities.Test;
 import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.services.ITestService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class TestController {
         this.testService = testService;
     }
 
-    @GetMapping("/getList")
+    @PostMapping("/getList")
     public ResponseEntity<respDto> getAllTests() {
         respDto respDto = new respDto();
         List<Test> tests=testService.getAllTests();

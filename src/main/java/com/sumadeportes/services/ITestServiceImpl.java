@@ -22,4 +22,15 @@ public class ITestServiceImpl implements ITestService {
     public List<Test> getAllTests() {
         return (List<Test>) testRepository.findAll();
     }
+
+    @Override
+    public Test getTestById(Long testId) {
+        return testRepository.findById(testId)
+                .orElseThrow(() -> new RuntimeException("Test not found with id: " + testId));
+    }
+
+    @Override
+    public List<Test> getTestsByDescription(String description) {
+        return testRepository.findTestByDescription(description);
+    }
 }

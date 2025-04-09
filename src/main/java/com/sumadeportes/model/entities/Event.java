@@ -1,6 +1,8 @@
 package com.sumadeportes.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,14 +28,19 @@ public class Event implements Serializable {
     private Long id;
 
    private String name;
-   @JsonIgnore
+
     @ManyToOne
+
     @JoinColumn(name = "tournament_id", nullable = false)
    private Tournament tournament;
 
-    @OneToOne(cascade = CascadeType.ALL) // Un evento tiene un test
-    @JoinColumn(name = "test_id", unique = true, nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL) // Un evento tiene un test
+    @JoinColumn(name = "test_id", nullable = false)
     private Test test;
+
+    @OneToMany(mappedBy = "event")
+    @JsonManagedReference
+    private List<EventRegister> eventsRegisters=new ArrayList<>();
 
     private Integer eventNumber;
 }

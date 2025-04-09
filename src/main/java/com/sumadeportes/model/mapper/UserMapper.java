@@ -1,8 +1,8 @@
 package com.sumadeportes.model.mapper;
 
+import com.sumadeportes.model.dto.LoginResponse;
 import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.entities.PersonId;
-import com.sumadeportes.model.entities.RoleEntity;
 import com.sumadeportes.model.entities.UserEntity;
 
 
@@ -58,6 +58,21 @@ public class UserMapper {
       //  );
         userEntity.setRole(userDto.getRole());
         return userEntity;
+    }
+    public static LoginResponse toLoginResponse(UserEntity userEntity) {
+        return new LoginResponse(
+                userEntity.getUserId(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getBirthDate(),
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                userEntity.getNumberRetries(),
+                userEntity.getLocked(),
+                userEntity.getEnabled(),
+                userEntity.getFirstTime(),
+                userEntity.getRole()
+        );
     }
 
 

@@ -4,24 +4,13 @@ package com.sumadeportes.services;
 import com.sumadeportes.Utils;
 import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.entities.PersonId;
-import com.sumadeportes.model.entities.RoleEntity;
 import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.model.mapper.UserMapper;
-import com.sumadeportes.model.repositories.RoleRepository;
 import com.sumadeportes.model.repositories.UserRepository;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import static java.awt.SystemColor.text;
 
 @Service
 public class IUserServiceImpl implements IUserService {

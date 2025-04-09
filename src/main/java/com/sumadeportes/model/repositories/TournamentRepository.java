@@ -15,6 +15,10 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     @Query("SELECT t FROM Tournament t WHERE :fecha BETWEEN t.startDate AND t.endDate")
     List<Tournament> findTournamentsByDate(@Param("fecha") LocalDate fecha);
 
+    @Query("SELECT t FROM Tournament t WHERE MONTH(t.startDate) <= :mes AND MONTH(t.endDate) >= :mes")
+    List<Tournament> findTournamentsByMonth(@Param("mes") int mes);
+
+
     @Query("SELECT t FROM Tournament t WHERE t.tournamentName = :name")
     Tournament findTournamentByName(@Param("name") String name);
 

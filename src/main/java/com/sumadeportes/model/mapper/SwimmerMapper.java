@@ -24,21 +24,13 @@ public class SwimmerMapper {
                 swimmer.getEmail(),
                 swimmer.getSwimmerKey(),
                 swimmer.getStatus(),
-                swimmer.getYearsActive(),
-                swimmer.getMonthsActive(),
-                swimmer.getDaysActive(),
                 swimmer.getRepresentorName(),
                 swimmer.getRepresentorSurename(),
                 swimmer.getPhone(),
-                swimmer.getPlain(),
-                swimmer.getLevel(),
-                swimmer.getMonday(),
-                swimmer.getTuesday(),
-                swimmer.getWednesday(),
-                swimmer.getThursday(),
-                swimmer.getFriday(),
-                swimmer.getSaturday(),
-                swimmer.getTeam().getTeamName()
+                swimmer.getTeam().getTeamName(),
+                swimmer.getClientCode()
+
+
                 );
 
     }
@@ -60,20 +52,10 @@ public class SwimmerMapper {
             swimmer.setEmail(swimmerDto.getEmail());
             swimmer.setSwimmerKey(swimmerDto.getSwimmerKey());
             swimmer.setStatus(swimmerDto.getStatus());
-            swimmer.setYearsActive(swimmerDto.getYearsActive());
-            swimmer.setMonthsActive(swimmerDto.getMonthsActive());
-            swimmer.setDaysActive(swimmerDto.getDaysActive());
             swimmer.setRepresentorName(swimmerDto.getRepresentorName());
             swimmer.setRepresentorSurename(swimmerDto.getRepresentorSurename());
             swimmer.setPhone(swimmerDto.getPhone());
-            swimmer.setPlain(swimmerDto.getPlain());
-            swimmer.setLevel(swimmerDto.getLevel());
-            swimmer.setMonday(swimmerDto.getMonday());
-            swimmer.setTuesday(swimmerDto.getTuesday());
-            swimmer.setWednesday(swimmerDto.getWednesday());
-            swimmer.setThursday(swimmerDto.getThursday());
-            swimmer.setFriday(swimmerDto.getFriday());
-            swimmer.setSaturday(swimmerDto.getSaturday());
+            swimmer.setClientCode(swimmerDto.getDocumentNumber());
         return swimmer;
     }
 }

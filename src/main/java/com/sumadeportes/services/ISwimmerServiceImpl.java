@@ -31,6 +31,7 @@ public class ISwimmerServiceImpl implements ISwimmerService {
         }else{
             swimmer.setTeam(null);
         }
+
         return swimmerRepository.save(swimmer);
     }
 

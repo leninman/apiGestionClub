@@ -3,10 +3,7 @@ package com.sumadeportes.controllers;
 import com.sumadeportes.model.dto.respDto;
 import com.sumadeportes.services.ITeamService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/team")
@@ -18,7 +15,7 @@ public class TeamController {
     public TeamController(ITeamService teamService) {
         this.teamService = teamService;
     }
-    @GetMapping("/getAll")
+    @PostMapping("/getAll")
     public ResponseEntity<respDto> getAllTeams() {
         respDto response = new respDto();
         response.setMessage("Teams found");

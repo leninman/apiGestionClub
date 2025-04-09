@@ -11,5 +11,6 @@ public interface ITournamentService {
     List<Tournament> getTournaments();
     List<Tournament> getTournamentsByDate(LocalDate date);
     Tournament getTournamentByName(String name);
-    Tournament createTournament(String tournamentName,LocalDate startDate,LocalDate endDate,List<String> teamsNames);
+    List<Tournament> gestTournamentsByMonth(int month);
+    Tournament createTournament(String tournamentName,LocalDate startDate,LocalDate endDate,List<String> teamsNames,Integer teamNumber);
 }

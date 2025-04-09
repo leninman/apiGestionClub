@@ -18,6 +18,7 @@ public class ITeamsServiceImpl implements ITeamService {
 
     @Override
     public List<Team> getAllTeams() {
-        return (List<Team>) teamRepository.findAll();
+        //return (List<Team>) teamRepository.findAll();
+        return teamRepository.findTeamsByTeamName("Barracudas SUMA");
     }
-}
+   }
