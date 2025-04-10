@@ -4,6 +4,7 @@ import com.sumadeportes.model.dto.EventDto;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.Tournament;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IEventService {
@@ -16,6 +17,8 @@ public interface IEventService {
     List<Event> getEventsByGenderAgeTournament(String gender, Integer age, String tournament);
     Event getEventById(Long id);
 
-    List<Event> getOutOfCategoryEvents(String gender, int age);
+    List<Event> getOutOfCategoryEvents(String gender, int age, int month);
+
+    List<Event> getAllEndedEvents(String gender, Integer age, String tournamentName, LocalDate dateToday,int month);
 }
 

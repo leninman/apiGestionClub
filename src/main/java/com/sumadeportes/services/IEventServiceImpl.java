@@ -9,10 +9,13 @@ import com.sumadeportes.model.repositories.TestRepository;
 import com.sumadeportes.model.repositories.TournamentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+
 
 @Service
 public class IEventServiceImpl implements IEventService {
@@ -84,7 +87,13 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> getOutOfCategoryEvents(String gender, int age) {
-        return List.of();
+    public List<Event> getOutOfCategoryEvents(String gender, int age, int month) {
+        //List<Event> outOfCategoryEvents = eventRepository.findAllEventsNotInCategory(gender, age);
+        return eventRepository.findAllEventsNotInCategory(gender, age, month);
+    }
+
+    @Override
+    public List<Event> getAllEndedEvents(String gender, Integer age, String tournamentName, LocalDate dateToday,int month) {
+        return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,tournamentName,dateToday,month);
     }
 }

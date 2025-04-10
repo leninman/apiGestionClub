@@ -1,9 +1,6 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.EventDto;
-import com.sumadeportes.model.dto.EventResponseDto;
-import com.sumadeportes.model.dto.EventsResponse;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.*;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.services.IEventService;
@@ -90,17 +87,63 @@ public class EventController {
         return eventService.getAllEvents();
     }
 
-    @PostMapping("/getOuOfCategoryEvents")
-    public ResponseEntity<respDto> getOufOfCategoryEvents(String gender, Integer age) {
+    @PostMapping("/getOutOfCategoryEvents")
+    public ResponseEntity<respDto> getOutOfCategoryEvents(@RequestBody OutOfCategoryRequest outOfCategoryRequest) {
         respDto response = new respDto();
         try {
-            List<Event> endedEvents = eventService.getOutOfCategoryEvents(gender, age);
+            List<Event> endedEvents = eventService.getOutOfCategoryEvents(outOfCategoryRequest.getGender(), outOfCategoryRequest.getAge(), outOfCategoryRequest.getMonth());
+            if (endedEvents.isEmpty()) {
+                response.setMessage("No out of category events found");
+                response.setCode("404");
+                response.setData(new EventsResponse(outOfCategoryRequest.getMonth(), new ArrayList<>(), new ArrayList<>()));
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            // Construir el objeto EventsResponse
+            List<String> eventNames = new ArrayList<>();
+            List<String> tournamentNames = new ArrayList<>();
+            for (Event event : endedEvents) {
+                eventNames.add(event.getName());
+                tournamentNames.add(event.getTournament().getTournamentName());
+            }
+            EventsResponse eventsResponse = new EventsResponse(outOfCategoryRequest.getMonth(), eventNames, tournamentNames);
+
             response.setMessage("Out of category events retrieved successfully");
             response.setCode("200");
-            response.setData(endedEvents);
+            response.setData(eventsResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setMessage("Error retrieving out of category events");
+            response.setCode("500");
+            response.setData(null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/getAllEndedEvents")
+    public ResponseEntity<respDto> getAllEndedEvents(@RequestBody EndedEventsRequest endedEventsRequest) {
+        respDto response = new respDto();
+        try {
+            List<Event> endedEvents = eventService.getAllEndedEvents(endedEventsRequest.getGender(), endedEventsRequest.getAge(), endedEventsRequest.getTournamentName(), LocalDate.now(), LocalDate.now().getMonth().getValue());
+            if (endedEvents.isEmpty()) {
+                response.setMessage("No ended events found");
+                response.setCode("404");
+                response.setData(new EventsResponse(LocalDate.now().getMonth().getValue(), new ArrayList<>(), new ArrayList<>()));
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+            // Construir el objeto EventsResponse
+            List<String> eventNames = new ArrayList<>();
+            List<String> tournamentNames = new ArrayList<>();
+            for (Event event : endedEvents) {
+                eventNames.add(event.getName());
+                tournamentNames.add(event.getTournament().getTournamentName());
+            }
+            EventsResponse eventsResponse = new EventsResponse(LocalDate.now().getMonth().getValue(), eventNames, tournamentNames);
+
+            response.setMessage("Ended events retrieved successfully");
+            response.setCode("200");
+            response.setData(eventsResponse);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setMessage("Error retrieving ended events");
             response.setCode("500");
             response.setData(null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
