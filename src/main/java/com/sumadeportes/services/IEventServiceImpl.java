@@ -82,4 +82,9 @@ public class IEventServiceImpl implements IEventService {
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Event> getOutOfCategoryEvents(String gender, int age) {
+        return List.of();
+    }
 }

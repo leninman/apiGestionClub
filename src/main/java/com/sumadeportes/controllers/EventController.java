@@ -49,9 +49,10 @@ public class EventController {
         }
 
     }
+
     @PostMapping("/getListByDate")
-   // public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
-    public ResponseEntity<respDto> getAllEventsByDate(@RequestParam int month,String gender,Integer age) {
+    // public ResponseEntity<respDto> getAllEventsByDate(@RequestParam LocalDate date,String gender,Integer age) {
+    public ResponseEntity<respDto> getAllEventsByDate(@RequestParam int month, String gender, Integer age) {
         respDto respDto = new respDto();
         List<Event> eventsList = new ArrayList<>();
         Map<Integer, EventsResponse> eventsResponseMap = new HashMap<>();
@@ -81,8 +82,6 @@ public class EventController {
         return ResponseEntity.ok(respDto);
 
 
-
-
     }
 
 
@@ -90,4 +89,23 @@ public class EventController {
     public List<Event> getAllEvents() {
         return eventService.getAllEvents();
     }
+
+    @PostMapping("/getOuOfCategoryEvents")
+    public ResponseEntity<respDto> getOufOfCategoryEvents(String gender, Integer age) {
+        respDto response = new respDto();
+        try {
+            List<Event> endedEvents = eventService.getOutOfCategoryEvents(gender, age);
+            response.setMessage("Out of category events retrieved successfully");
+            response.setCode("200");
+            response.setData(endedEvents);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setMessage("Error retrieving out of category events");
+            response.setCode("500");
+            response.setData(null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+
+
