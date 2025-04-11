@@ -18,7 +18,7 @@ public class EndedEventsRequest implements Serializable {
     private static final long serialVersionUID = -6554113027428042688L;
     private String gender;
     private int age;
-    private String tournamentName;
+   // private String tournamentName;
    // private LocalDate dateToday;
   //  int monthToday;
 

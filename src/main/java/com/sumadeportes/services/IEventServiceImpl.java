@@ -93,7 +93,7 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> getAllEndedEvents(String gender, Integer age, String tournamentName, LocalDate dateToday,int month) {
-        return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,tournamentName,dateToday,month);
+    public List<Event> getAllEndedEvents(String gender, Integer age, LocalDate dateToday,int month) {
+        return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,dateToday,month);
     }
 }

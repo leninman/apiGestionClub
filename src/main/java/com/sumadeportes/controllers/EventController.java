@@ -122,7 +122,7 @@ public class EventController {
     public ResponseEntity<respDto> getAllEndedEvents(@RequestBody EndedEventsRequest endedEventsRequest) {
         respDto response = new respDto();
         try {
-            List<Event> endedEvents = eventService.getAllEndedEvents(endedEventsRequest.getGender(), endedEventsRequest.getAge(), endedEventsRequest.getTournamentName(), LocalDate.now(), LocalDate.now().getMonth().getValue());
+            List<Event> endedEvents = eventService.getAllEndedEvents(endedEventsRequest.getGender(), endedEventsRequest.getAge(), LocalDate.now(), LocalDate.now().getMonth().getValue());
             if (endedEvents.isEmpty()) {
                 response.setMessage("No ended events found");
                 response.setCode("404");

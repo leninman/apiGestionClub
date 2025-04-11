@@ -19,6 +19,6 @@ public interface IEventService {
 
     List<Event> getOutOfCategoryEvents(String gender, int age, int month);
 
-    List<Event> getAllEndedEvents(String gender, Integer age, String tournamentName, LocalDate dateToday,int month);
+    List<Event> getAllEndedEvents(String gender, Integer age, LocalDate dateToday,int month);
 }
 
