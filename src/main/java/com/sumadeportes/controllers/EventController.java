@@ -63,12 +63,14 @@ public class EventController {
             List<Event> events = eventService.getEventsByGenderAgeTournament(eventsRequest.getGender(), eventsRequest.getAge(), tournament.getId());
             List<String> eventName= new ArrayList<>();
             List<String> tournamentName=new ArrayList<>();
-            for (Event event : events) {
-                eventName.add(event.getName());
-                tournamentName.add(event.getTournament().getTournamentName());
+            if(!events.isEmpty()) {
+                for (Event event : events) {
+                    eventName.add(event.getName());
+                    tournamentName.add(event.getTournament().getTournamentName());
+                }
+                EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName, tournament.getEndDate().getDayOfMonth());
+                eventResponses.add(eventResponse);
             }
-            EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName,tournament.getEndDate().getDayOfMonth());
-            eventResponses.add(eventResponse);
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
@@ -98,12 +100,14 @@ public class EventController {
             List<Event> events = eventService.getOutOfCategoryEvents(eventsRequest.getGender(), eventsRequest.getAge(), tournament.getId());
             List<String> eventName= new ArrayList<>();
             List<String> tournamentName=new ArrayList<>();
-            for (Event event : events) {
-                eventName.add(event.getName());
-                tournamentName.add(event.getTournament().getTournamentName());
+            if(!events.isEmpty()) {
+                for (Event event : events) {
+                    eventName.add(event.getName());
+                    tournamentName.add(event.getTournament().getTournamentName());
+                }
+                EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName, tournament.getEndDate().getDayOfMonth());
+                eventResponses.add(eventResponse);
             }
-            EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName,tournament.getEndDate().getDayOfMonth());
-            eventResponses.add(eventResponse);
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
@@ -126,12 +130,14 @@ public class EventController {
             List<Event> events = eventService.getAllEndedEvents(eventsRequest.getGender(), eventsRequest.getAge(), tournament.getId());
             List<String> eventName= new ArrayList<>();
             List<String> tournamentName=new ArrayList<>();
-            for (Event event : events) {
-                eventName.add(event.getName());
-                tournamentName.add(event.getTournament().getTournamentName());
+            if(!events.isEmpty()) {
+                for (Event event : events) {
+                    eventName.add(event.getName());
+                    tournamentName.add(event.getTournament().getTournamentName());
+                }
+                EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName, tournament.getEndDate().getDayOfMonth());
+                eventResponses.add(eventResponse);
             }
-            EventResponse eventResponse = new EventResponse(tournament.getStartDate().getDayOfMonth(), eventName, tournamentName,tournament.getEndDate().getDayOfMonth());
-            eventResponses.add(eventResponse);
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
