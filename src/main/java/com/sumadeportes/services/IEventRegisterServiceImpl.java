@@ -1,7 +1,7 @@
 package com.sumadeportes.services;
 
 import com.sumadeportes.model.dto.EventRegisterDto;
-import com.sumadeportes.model.dto.EventsMarks;
+import com.sumadeportes.model.dto.EventsMarksDto;
 import com.sumadeportes.model.entities.*;
 import com.sumadeportes.model.repositories.*;
 import org.springframework.stereotype.Service;
@@ -28,19 +28,19 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     }
 
     @Override
-    public List<EventRegister> saveEventRegister(EventRegisterDto eventRegisterDto) {
+    public List<com.sumadeportes.model.entities.EventRegister> saveEventRegister(EventRegisterDto eventRegisterDto) {
 
         long swimmerNumber = 0L;
         Integer teamNumber = 0;
         Team team = new Team();
-        List<EventRegister> eventsRegisteredSaved = new ArrayList<>();
+        List<com.sumadeportes.model.entities.EventRegister> eventsRegisteredSaved = new ArrayList<>();
 
         Optional<Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
         if (swimmer.isPresent()) {
             team = swimmer.get().getTeam();
         }
 
-        for (EventsMarks eventMark : eventRegisterDto.getEventsMarks()) {
+        for (EventsMarksDto eventMark : eventRegisterDto.getEventsMarks()) {
             String tournamentName = eventMark.getTournamentName();
             Tournament tournamentSaved = tournamentRepository.findTournamentByName(tournamentName);
             Event event = eventRepository.findEventByNameAndTournament(eventMark.getEventName(), tournamentSaved);
@@ -48,13 +48,13 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             TournamentTeam tournamentTeam = tournamentTeamRepository.findTournamentTeamByTournamentAndTeam(tournamentSaved, team);
             teamNumber = tournamentTeam.getTeamPosition();
 
-            EventRegister eventRegisterToSave = new EventRegister();
+            com.sumadeportes.model.entities.EventRegister eventRegisterToSave = new com.sumadeportes.model.entities.EventRegister();
             swimmer.ifPresent(eventRegisterToSave::setSwimmer);
             eventRegisterToSave.setEvent(event);
-            List<EventRegister> eventsRegistered = eventRegisterRepository.findEventRegisterByEvent(event);
+            List<com.sumadeportes.model.entities.EventRegister> eventsRegistered = eventRegisterRepository.findEventRegisterByEvent(event);
             if (!eventsRegistered.isEmpty()) {
                 List<Integer> swimmerNumbers = new ArrayList<>();
-                for (EventRegister eventRegistered : eventsRegistered) {
+                for (com.sumadeportes.model.entities.EventRegister eventRegistered : eventsRegistered) {
                     String swimmerNumberString = eventRegistered.getSwimmerNumber();
                     String stringPart = swimmerNumberString.substring(1);
                     Integer partInt = Integer.parseInt(stringPart);
@@ -72,7 +72,7 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
 
             // Establecer la marca para cada evento
             eventRegisterToSave.setMark(String.valueOf(eventMark.getMark()));
-            EventRegister eventregisterSaved = eventRegisterRepository.save(eventRegisterToSave);
+            com.sumadeportes.model.entities.EventRegister eventregisterSaved = eventRegisterRepository.save(eventRegisterToSave);
             eventsRegisteredSaved.add(eventregisterSaved);
         }
 
@@ -85,12 +85,12 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     }
 
     @Override
-    public List<EventRegister> getAllEventRegisters() {
+    public List<com.sumadeportes.model.entities.EventRegister> getAllEventRegisters() {
         return List.of();
     }
 
     @Override
-    public EventRegister getEventRegisterById(Long id) {
+    public com.sumadeportes.model.entities.EventRegister getEventRegisterById(Long id) {
         return null;
     }
 

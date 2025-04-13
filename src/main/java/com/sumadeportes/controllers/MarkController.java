@@ -1,10 +1,8 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.EventResponseDto;
+
 import com.sumadeportes.model.dto.MarkRequest;
-import com.sumadeportes.model.dto.respDto;
-import com.sumadeportes.model.entities.Event;
-import com.sumadeportes.model.entities.PersonId;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.Swimmer;
 import com.sumadeportes.model.entities.Test;
 import com.sumadeportes.services.IEventService;
@@ -34,12 +32,12 @@ public class MarkController {
     }
 
     @PostMapping("/getMark")
-    public ResponseEntity<respDto> getMarkByEvent(@RequestBody MarkRequest markRequest) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getMarkByEvent(@RequestBody MarkRequest markRequest) {
+        RespDto response = new RespDto();
         String mark = "";
         Optional<Swimmer> swimmer = swimmerService.getSwimmerById(markRequest.getSwimmerId());
         //Test test = testService.getTestById(testId);
-        List<Test> tests = testService.getTestsByDescription(markRequest.getTeamDescription());
+        List<Test> tests = testService.getTestsByDescription(markRequest.getTestDescription());
         if (swimmer.isPresent()) {
             mark = markService.getMarkByEvent(swimmer.get(), tests.getFirst());
         }

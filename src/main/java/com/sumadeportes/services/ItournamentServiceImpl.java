@@ -49,6 +49,11 @@ public class ItournamentServiceImpl implements ITournamentService {
     }
 
     @Override
+    public List<Tournament> getFinishedTournamentsByMonth(int month) {
+        return tournamentRepository.findFinishedTournamentsByMonth(month);
+    }
+
+    @Override
     @Transactional
     public Tournament createTournament(String tournament, LocalDate startDate,LocalDate endDate,List<String> teamNames,Integer teamNumber) {
         Tournament savedTournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(tournament,startDate,endDate);
@@ -74,5 +79,10 @@ public class ItournamentServiceImpl implements ITournamentService {
             tournamentTeamRepository.saveAll(tournamentTeams);
         }
         return t;
+    }
+
+    @Override
+    public List<Tournament> getTournamentsByMonthGenderAndAge(Integer month, String gender, Integer age) {
+        return tournamentRepository.findTournamentsByMonthGenderAndAge(month,gender,age);
     }
 }

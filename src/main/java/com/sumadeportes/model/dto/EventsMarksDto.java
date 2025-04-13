@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class EventsMarks {
+public class EventsMarksDto {
     private String tournamentName;
     private String eventName;
     private String mark;

@@ -1,11 +1,8 @@
 package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.SwimmerDto;
-import com.sumadeportes.model.dto.UserDto;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.PersonId;
-import com.sumadeportes.model.entities.Swimmer;
-import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.services.ISwimmerService;
 import com.sumadeportes.services.IUserService;
 import org.springframework.http.HttpStatus;
@@ -28,17 +25,17 @@ public class SwimmerController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<respDto> saveSwimmer(@RequestBody SwimmerDto swimmerDto) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> saveSwimmer(@RequestBody SwimmerDto swimmerDto) {
+        RespDto response = new RespDto();
         try {
-            Optional<Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(swimmerDto.getDocumentType(), swimmerDto.getDocumentNumber()));
+            Optional<com.sumadeportes.model.entities.Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(swimmerDto.getDocumentType(), swimmerDto.getDocumentNumber()));
             if (swimmer.isPresent()) {
                 response.setMessage("Swimmer already exists");
                 response.setCode("409");
                 response.setData(swimmer);
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
-            Swimmer savedSwimmer = swimmerService.saveSwimmer(swimmerDto);
+            com.sumadeportes.model.entities.Swimmer savedSwimmer = swimmerService.saveSwimmer(swimmerDto);
            // savedSwimmer.setUser(userService.getUserByEmail(swimmerDto.getEmail()).get());
             response.setMessage("Swmmer saved successfully");
             response.setCode("201");
@@ -53,9 +50,9 @@ public class SwimmerController {
     }
 
     @PostMapping("/getById")
-    public ResponseEntity<respDto> getById(@RequestBody PersonId swimmerId) {
-        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getById(@RequestBody PersonId swimmerId) {
+        Optional<com.sumadeportes.model.entities.Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
+        RespDto response = new RespDto();
 
         if (swimmer.isPresent()) {
             response.setMessage("Swimmer found");
@@ -72,8 +69,8 @@ public class SwimmerController {
     }
 
     @PostMapping("/getList")
-    public ResponseEntity<respDto> getList() {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getList() {
+        RespDto response = new RespDto();
         response.setMessage("Swimmers found");
         response.setCode("200");
         response.setData(swimmerService.getAllSwimmers());

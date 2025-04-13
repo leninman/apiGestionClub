@@ -1,8 +1,7 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.Test;
-import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.services.ITestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +20,8 @@ public class TestController {
     }
 
     @PostMapping("/getList")
-    public ResponseEntity<respDto> getAllTests() {
-        respDto respDto = new respDto();
+    public ResponseEntity<RespDto> getAllTests() {
+        RespDto respDto = new RespDto();
         List<Test> tests=testService.getAllTests();
         respDto.setMessage("Tests found");
         respDto.setCode("200");

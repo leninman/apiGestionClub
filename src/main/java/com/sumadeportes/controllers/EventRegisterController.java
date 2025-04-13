@@ -1,8 +1,8 @@
 package com.sumadeportes.controllers;
 
 import com.sumadeportes.model.dto.EventRegisterDto;
-import com.sumadeportes.model.dto.EventsMarks;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.EventsMarksDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.PersonId;
 import com.sumadeportes.model.entities.Swimmer;
@@ -34,8 +34,8 @@ public class EventRegisterController {
         this.swimmerRepository = swimmerRepository;
     }
     @PostMapping("/create")
-    public ResponseEntity<respDto> saveEventRegister(@RequestBody EventRegisterDto eventRegisterDto) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> saveEventRegister(@RequestBody EventRegisterDto eventRegisterDto) {
+        RespDto response = new RespDto();
         Optional<Swimmer> swimmer = swimmerRepository.findSwimmerBySwimmerId(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
         if(swimmer.isEmpty()) {
             response.setMessage("Swimmer not found");
@@ -44,7 +44,7 @@ public class EventRegisterController {
             return ResponseEntity.status(404).body(response);
         }
         try {
-            for (EventsMarks eventMark : eventRegisterDto.getEventsMarks()) {
+            for (EventsMarksDto eventMark : eventRegisterDto.getEventsMarks()) {
                 // Obtener el ID del evento basado en el nombre del torneo y el nombre del evento
                 Tournament tournament = tournamentRepository.findTournamentByName(eventMark.getTournamentName());
                 Event event = eventRepository.findEventByNameAndTournament(eventMark.getEventName(), tournament);

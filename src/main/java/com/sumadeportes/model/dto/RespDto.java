@@ -1,6 +1,5 @@
 package com.sumadeportes.model.dto;
 
-import com.sumadeportes.model.entities.PersonId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,14 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MarkRequest implements Serializable {
+public class RespDto implements Serializable {
     @Serial
-    private static final long serialVersionUID = -2357682746057218600L;
-    private PersonId swimmerId;
-    private String testDescription;
+    private static final long serialVersionUID = 4513404818154051220L;
+    private String message;
+    private String code;
+    private Object data;
+
+
+
 
 }

@@ -1,6 +1,6 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.services.IMasterTournamentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class MasterTournamentController {
     }
 
     @PostMapping("/getAll")
-    public ResponseEntity<respDto> findAllMasterTournaments() {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> findAllMasterTournaments() {
+        RespDto response = new RespDto();
         response.setMessage("Tournaments found");
         response.setCode("200");
         response.setData(masterTournamentService.getAllMasterTournaments());

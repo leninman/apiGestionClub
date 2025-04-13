@@ -2,7 +2,6 @@ package com.sumadeportes.services;
 
 import com.sumadeportes.model.dto.SwimmerDto;
 import com.sumadeportes.model.entities.PersonId;
-import com.sumadeportes.model.entities.Swimmer;
 import com.sumadeportes.model.entities.Team;
 import com.sumadeportes.model.mapper.SwimmerMapper;
 import com.sumadeportes.model.repositories.SwimmerRepository;
@@ -23,8 +22,8 @@ public class ISwimmerServiceImpl implements ISwimmerService {
     }
 
     @Override
-    public Swimmer saveSwimmer(SwimmerDto swimmerDto) {
-        Swimmer swimmer = SwimmerMapper.toSwimmer(swimmerDto);
+    public com.sumadeportes.model.entities.Swimmer saveSwimmer(SwimmerDto swimmerDto) {
+        com.sumadeportes.model.entities.Swimmer swimmer = SwimmerMapper.toSwimmer(swimmerDto);
         Team team=teamRepository.findTeamByteamName(swimmerDto.getTeam());
         if(team!=null){
             swimmer.setTeam(team);
@@ -36,12 +35,12 @@ public class ISwimmerServiceImpl implements ISwimmerService {
     }
 
     @Override
-    public Optional<Swimmer> getSwimmerById(PersonId swimmerId) {
+    public Optional<com.sumadeportes.model.entities.Swimmer> getSwimmerById(PersonId swimmerId) {
         return swimmerRepository.findSwimmerBySwimmerId(swimmerId);
     }
 
     @Override
-    public List<Swimmer> getAllSwimmers() {
-        return (List<Swimmer>) swimmerRepository.findAll();
+    public List<com.sumadeportes.model.entities.Swimmer> getAllSwimmers() {
+        return (List<com.sumadeportes.model.entities.Swimmer>) swimmerRepository.findAll();
     }
 }

@@ -2,7 +2,7 @@ package com.sumadeportes.controllers;
 
 
 import com.sumadeportes.model.dto.UserDto;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.services.EmailService;
 import com.sumadeportes.services.IUserService;
@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<respDto> saveUser(@RequestBody UserDto userDto) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> saveUser(@RequestBody UserDto userDto) {
+        RespDto response = new RespDto();
         try {
             Optional<UserEntity> userEntity = userService.getUserByEmail(userDto.getEmail());
             if (userEntity.isPresent()) {
@@ -54,8 +54,8 @@ public class UserController {
     }
 
     @PostMapping("/getByUser")
-    public ResponseEntity<respDto> getById(@RequestParam String email) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getById(@RequestParam String email) {
+        RespDto response = new RespDto();
         try {
             Optional<UserEntity> user = userService.getUserByEmail(email);
             response.setMessage("User found");
@@ -73,8 +73,8 @@ public class UserController {
 
 
     @PostMapping("/getAll")
-    public ResponseEntity<respDto> getAllTeams() {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getAllTeams() {
+        RespDto response = new RespDto();
         response.setMessage("Users found");
         response.setCode("200");
         response.setData(userService.getAllUsers());
@@ -82,8 +82,8 @@ public class UserController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<respDto> handleException(Exception e) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> handleException(Exception e) {
+        RespDto response = new RespDto();
         response.setMessage(e.getMessage());
         response.setCode("500");
         response.setData(null);

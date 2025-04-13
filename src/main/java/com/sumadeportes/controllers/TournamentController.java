@@ -1,8 +1,6 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.TournamentResponse;
-import com.sumadeportes.model.dto.TournamentTeamsDto;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.*;
 import com.sumadeportes.model.entities.Event;
 import com.sumadeportes.model.entities.Tournament;
 import com.sumadeportes.model.entities.TournamentTeam;
@@ -12,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tournament")
@@ -31,9 +27,9 @@ public class TournamentController {
     }
 
     @PostMapping("/getList")
-    public ResponseEntity<respDto> getAllTournaments() {
+    public ResponseEntity<RespDto> getAllTournaments() {
 
-        respDto respDto = new respDto();
+        RespDto respDto = new RespDto();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         List<Tournament> tournaments = tournamentService.getTournaments();
@@ -55,9 +51,9 @@ public class TournamentController {
     }
 
     @PostMapping("/getTournamentsTeamsList")
-    public ResponseEntity<respDto> getAllTournamentsTeams() {
+    public ResponseEntity<RespDto> getAllTournamentsTeams() {
 
-        respDto respDto = new respDto();
+        RespDto respDto = new RespDto();
 
         List<TournamentTeam> tournamentsTeams = tournamentTeamService.findAllTournamentsTeams();
         if (tournamentsTeams.isEmpty()) {
@@ -72,11 +68,37 @@ public class TournamentController {
         return ResponseEntity.ok(respDto);
 
     }
+    @PostMapping("/getProgrammed")
+    public ResponseEntity<RespDto> getProgrammedTournaments(@RequestBody TournamentRequest tournamentRequest) {
+        RespDto respDto = new RespDto();
+        List<Tournament> tournaments = tournamentService.getTournamentsByMonthGenderAndAge(tournamentRequest.getMonth(), tournamentRequest.getGender(), tournamentRequest.getAge());
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        if (tournaments.isEmpty()) {
+            respDto.setCode("404");
+            respDto.setMessage("No tournaments found");
+            respDto.setData(null);
+            return new ResponseEntity<>(respDto, HttpStatus.NOT_FOUND);
+        }
+        List<TournamentsResponse> tournamentsResponses = tournaments.stream().map(tournament -> {
+            return new TournamentsResponse(
+                    tournament.getStartDate().getDayOfMonth(),
+                    tournament.getEvents().stream()
+                            .map(Event::getName)
+                            .toList(), // Ajusta según la estructura de datos
+                    tournaments.stream().map(t->t.getTournamentName())
+                            .toList(), // Ajusta según la estructura de datos
+                    tournament.getEndDate().getDayOfMonth()
+            );
+        }).toList();
+        respDto.setCode("200");
+        respDto.setData(tournamentsResponses);
+        return ResponseEntity.ok(respDto);
+    }
 
 
     @PostMapping("/create")
-    public ResponseEntity<respDto> createTournament(@RequestBody TournamentTeamsDto tournamentTeamsDto) {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> createTournament(@RequestBody TournamentTeamsDto tournamentTeamsDto) {
+        RespDto response = new RespDto();
         try {
             Tournament tournament = tournamentService.createTournament(tournamentTeamsDto.getTournamentName(), tournamentTeamsDto.getStartDate(), tournamentTeamsDto.getEndDate(), tournamentTeamsDto.getTeamsNames(), tournamentTeamsDto.getTeamNumber());
             if(tournament==null) {

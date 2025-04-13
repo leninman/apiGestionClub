@@ -19,8 +19,8 @@ public interface EventRepository extends CrudRepository<Event, Long> {
             "INNER JOIN tests te ON e.test_id = te.id " +
             "WHERE te.gender = :gender " +
             "AND :age BETWEEN te.start_age AND te.end_age " +
-            "AND t.tournament_name = :tournamentName", nativeQuery = true)
-    List<Event> findAllWithTournamentAndTeams(String gender,Integer age,String tournamentName);
+            "AND t.id = :tournamentId", nativeQuery = true)
+    List<Event> findAllWithTournamentAndTeams(String gender,Integer age,Long tournamentId);
 
     /*All the ended-events in the month and in category*/
     @Query(value="SELECT e.* FROM events e " +
@@ -28,9 +28,9 @@ public interface EventRepository extends CrudRepository<Event, Long> {
             "INNER JOIN tests te ON e.test_id = te.id " +
             "WHERE te.gender = :gender " +
             "AND :age BETWEEN te.start_age AND te.end_age " +
-            "AND :dateToday > t.end_date " +
-            "AND :month BETWEEN MONTH(t.start_date) AND MONTH(t.end_date)", nativeQuery = true)
-    List<Event> findAllWithTournamentAndTeamsEnded(String gender, Integer age, LocalDate dateToday, int month);
+            "AND CURRENT_DATE > t.end_date " +
+            "AND t.id = :tournamentId", nativeQuery = true)
+    List<Event> findAllWithTournamentAndTeamsEnded(String gender, Integer age, Long tournamentId);
 
 
     /*All the events out of swimmer category*/
@@ -42,8 +42,8 @@ public interface EventRepository extends CrudRepository<Event, Long> {
                        "INNER JOIN tests te ON e.test_id = te.id " +
                         "WHERE te.gender = :gender " +
                         "AND :age BETWEEN te.start_age AND te.end_age) " +
-                       "AND :month BETWEEN MONTH(t.start_date) AND MONTH(t.end_date)", nativeQuery = true)
-    List<Event> findAllEventsNotInCategory(String gender,int age, int month);
+                       "AND t.id = :tournamentId", nativeQuery = true)
+    List<Event> findAllEventsNotInCategory(String gender,int age, Long tournamentId);
 
 
 

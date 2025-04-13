@@ -77,8 +77,8 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> getEventsByGenderAgeTournament(String gender,Integer age,String tournament) {
-        return eventRepository.findAllWithTournamentAndTeams(gender,age,tournament);
+    public List<Event> getEventsByGenderAgeTournament(String gender,Integer age,Long tournamentId) {
+        return eventRepository.findAllWithTournamentAndTeams(gender,age,tournamentId);
     }
 
     @Override
@@ -87,13 +87,13 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<Event> getOutOfCategoryEvents(String gender, int age, int month) {
+    public List<Event> getOutOfCategoryEvents(String gender, int age, Long tournamentId) {
         //List<Event> outOfCategoryEvents = eventRepository.findAllEventsNotInCategory(gender, age);
-        return eventRepository.findAllEventsNotInCategory(gender, age, month);
+        return eventRepository.findAllEventsNotInCategory(gender, age, tournamentId);
     }
 
     @Override
-    public List<Event> getAllEndedEvents(String gender, Integer age, LocalDate dateToday,int month) {
-        return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,dateToday,month);
+    public List<Event> getAllEndedEvents(String gender, Integer age, Long tournamentId) {
+        return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,tournamentId);
     }
 }

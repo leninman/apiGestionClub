@@ -5,9 +5,6 @@ import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.entities.PersonId;
 import com.sumadeportes.model.entities.UserEntity;
 
-
-import java.util.stream.Collectors;
-
 public class UserMapper {
 
     public static UserDto toDto(UserEntity userEntity) {

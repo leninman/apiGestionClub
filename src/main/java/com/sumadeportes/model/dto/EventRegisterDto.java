@@ -1,9 +1,5 @@
 package com.sumadeportes.model.dto;
 
-import com.sumadeportes.model.entities.Event;
-import com.sumadeportes.model.entities.Swimmer;
-import com.sumadeportes.model.entities.Tournament;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +16,6 @@ public class EventRegisterDto {
     private String swimmerDocumentType;
     private String swimmerDocumentNumber;
     private String tournamentName;
-    private List<EventsMarks> eventsMarks;
+    private List<EventsMarksDto> eventsMarks;
 
 }

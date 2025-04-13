@@ -1,9 +1,9 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.ChangePasswordRequestDto;
-import com.sumadeportes.model.dto.LoginRequestDto;
+import com.sumadeportes.model.dto.ChangePasswordRequest;
+import com.sumadeportes.model.dto.LoginRequest;
 import com.sumadeportes.model.dto.LoginResponse;
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.model.mapper.UserMapper;
 import com.sumadeportes.services.IUserService;
@@ -24,8 +24,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
-        respDto response = new respDto();
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequestDto) {
+        RespDto response = new RespDto();
         Optional<UserEntity> userEntity = userService.getUserByEmail(loginRequestDto.getEmail());
         if (!userEntity.isPresent()) {
             response.setCode("404");
@@ -66,8 +66,8 @@ public class LoginController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<?> login(@RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
-        respDto response = new respDto();
+    public ResponseEntity<?> login(@RequestBody ChangePasswordRequest changePasswordRequestDto) {
+        RespDto response = new RespDto();
         Optional<UserEntity> userEntity = userService.getUserByEmail(changePasswordRequestDto.getEmail());
 
         if (!userEntity.get().getPassword().equals(changePasswordRequestDto.getOldPassword())) {

@@ -12,14 +12,11 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class respDto implements Serializable {
+public class ChangePasswordRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = 4513404818154051220L;
-    private String message;
-    private String code;
-    private Object data;
-
-
-
+    private static final long serialVersionUID = 6691210272968556679L;
+    private String email;
+    private String oldPassword;
+    private String newPassword;
 
 }

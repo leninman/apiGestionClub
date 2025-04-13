@@ -14,11 +14,11 @@ public interface IEventService {
 
     List<Event> getEventsByTournament(Tournament tournament);
 
-    List<Event> getEventsByGenderAgeTournament(String gender, Integer age, String tournament);
+    List<Event> getEventsByGenderAgeTournament(String gender, Integer age, Long tournamentId);
     Event getEventById(Long id);
 
-    List<Event> getOutOfCategoryEvents(String gender, int age, int month);
+    List<Event> getOutOfCategoryEvents(String gender, int age, Long tournamentId);
 
-    List<Event> getAllEndedEvents(String gender, Integer age, LocalDate dateToday,int month);
+    List<Event> getAllEndedEvents(String gender, Integer age, Long tournamentId);
 }
 

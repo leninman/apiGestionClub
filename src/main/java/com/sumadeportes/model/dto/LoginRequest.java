@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequestDto implements Serializable {
+public class LoginRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 5099469017649783756L;
     private String email;

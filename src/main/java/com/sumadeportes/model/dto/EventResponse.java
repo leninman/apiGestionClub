@@ -7,19 +7,19 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventsResponse implements Serializable {
+public class EventResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = -737013171000273093L;
 
-    private Integer date;
+    private Integer startDate;
     private List<String> eventName;
-    private List<String> tournamentsName;
+    private List<String> tournamentName;
+    private Integer endDate;
 
 }

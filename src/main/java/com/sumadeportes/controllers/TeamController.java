@@ -1,6 +1,6 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.respDto;
+import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.services.ITeamService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class TeamController {
         this.teamService = teamService;
     }
     @PostMapping("/getAll")
-    public ResponseEntity<respDto> getAllTeams() {
-        respDto response = new respDto();
+    public ResponseEntity<RespDto> getAllTeams() {
+        RespDto response = new RespDto();
         response.setMessage("Teams found");
         response.setCode("200");
         response.setData(teamService.getAllTeams());

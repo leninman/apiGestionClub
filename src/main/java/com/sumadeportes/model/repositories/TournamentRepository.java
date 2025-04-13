@@ -18,11 +18,26 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     @Query("SELECT t FROM Tournament t WHERE MONTH(t.startDate) <= :mes AND MONTH(t.endDate) >= :mes")
     List<Tournament> findTournamentsByMonth(@Param("mes") int mes);
 
+    @Query("SELECT t FROM Tournament t WHERE MONTH(t.startDate) <= :mes AND MONTH(t.endDate) >= :mes AND t.endDate < CURRENT_DATE")
+    List<Tournament> findFinishedTournamentsByMonth(@Param("mes") int mes);
+
 
     @Query("SELECT t FROM Tournament t WHERE t.tournamentName = :name")
     Tournament findTournamentByName(@Param("name") String name);
 
     Tournament findTournamentByTournamentNameAndStartDateAndEndDate(String tournamentName, LocalDate startDate, LocalDate endDate);
 
-
+    @Query("SELECT DISTINCT t FROM Tournament t " +
+            "JOIN t.events e " +
+            "WHERE FUNCTION('MONTH', t.startDate) <= :month " +
+            "AND FUNCTION('MONTH', t.endDate) >= :month " +
+            "AND EXISTS (" +
+            "   SELECT te FROM Test te " +
+            "   WHERE te = e.test " +
+            "   AND te.gender = :gender " +
+            "   AND te.startAge <= :age AND te.endAge >= :age" +
+            ")")
+    List<Tournament> findTournamentsByMonthGenderAndAge(@Param("month") int month,
+                                                                    @Param("gender") String gender,
+                                                                    @Param("age") int age);
 }
