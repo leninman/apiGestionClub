@@ -20,7 +20,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
             "WHERE te.gender = :gender " +
             "AND :age BETWEEN te.start_age AND te.end_age " +
             "AND CURRENT_DATE <= t.start_date " +
-            "AND t.id = :tournamentId", nativeQuery = true)
+            "AND t.id = :tournamentId ORDER BY t.start_date ", nativeQuery = true)
     List<Event> findAllWithTournamentAndTeams(String gender,Integer age,Long tournamentId);
 
     /*All the ended-events in the month and in category*/
@@ -30,7 +30,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
             "WHERE te.gender = :gender " +
             "AND :age BETWEEN te.start_age AND te.end_age " +
             "AND CURRENT_DATE > t.end_date " +
-            "AND t.id = :tournamentId", nativeQuery = true)
+            "AND t.id = :tournamentId ORDER BY t.start_date", nativeQuery = true)
     List<Event> findAllWithTournamentAndTeamsEnded(String gender, Integer age, Long tournamentId);
 
 
@@ -43,7 +43,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
                        "INNER JOIN tests te ON e.test_id = te.id " +
                         "WHERE te.gender = :gender " +
                         "AND :age BETWEEN te.start_age AND te.end_age) " +
-                       "AND t.id = :tournamentId", nativeQuery = true)
+                       "AND t.id = :tournamentId ORDER BY t.start_date", nativeQuery = true)
     List<Event> findAllEventsNotInCategory(String gender,int age, Long tournamentId);
 
 

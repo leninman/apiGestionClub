@@ -20,5 +20,7 @@ public interface IEventService {
     List<Event> getOutOfCategoryEvents(String gender, int age, Long tournamentId);
 
     List<Event> getAllEndedEvents(String gender, Integer age, Long tournamentId);
+
+    Boolean isEventRegistered(Event event, String swimmerDocumentType, String swimmerDocumentNumber);
 }
 

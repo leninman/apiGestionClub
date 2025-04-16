@@ -1,12 +1,8 @@
 package com.sumadeportes.services;
 
 import com.sumadeportes.model.dto.EventDto;
-import com.sumadeportes.model.entities.Event;
-import com.sumadeportes.model.entities.Test;
-import com.sumadeportes.model.entities.Tournament;
-import com.sumadeportes.model.repositories.EventRepository;
-import com.sumadeportes.model.repositories.TestRepository;
-import com.sumadeportes.model.repositories.TournamentRepository;
+import com.sumadeportes.model.entities.*;
+import com.sumadeportes.model.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,12 +22,18 @@ public class IEventServiceImpl implements IEventService {
 
     private final TestRepository testRepository;
 
+    private final EventRegisterRepository eventRegisterRepository;
+
+    private final SwimmerRepository swimmerRepository;
 
 
-    public IEventServiceImpl(EventRepository eventRepository, TournamentRepository tournamentRepository, TestRepository testRepository) {
+
+    public IEventServiceImpl(EventRepository eventRepository, TournamentRepository tournamentRepository, TestRepository testRepository, EventRegisterRepository eventRegisterRepository, SwimmerRepository swimmerRepository) {
         this.eventRepository = eventRepository;
         this.tournamentRepository = tournamentRepository;
         this.testRepository = testRepository;
+        this.eventRegisterRepository = eventRegisterRepository;
+        this.swimmerRepository = swimmerRepository;
     }
 
     @Override
@@ -95,5 +97,16 @@ public class IEventServiceImpl implements IEventService {
     @Override
     public List<Event> getAllEndedEvents(String gender, Integer age, Long tournamentId) {
         return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,tournamentId);
+    }
+
+    @Override
+    public Boolean isEventRegistered(Event event, String swimmerDocumentType, String swimmerDocumentNumber) {
+        Swimmer swimmer=swimmerRepository.findSwimmerBySwimmerId(new PersonId(swimmerDocumentType,swimmerDocumentNumber));
+        EventRegister e= eventRegisterRepository.findEventRegisterByEventAndSwimmer(event,swimmer);
+        if (e != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

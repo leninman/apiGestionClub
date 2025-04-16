@@ -18,7 +18,7 @@ public class EventRegisterDto {
 
     private String swimmerDocumentType;
     private String swimmerDocumentNumber;
-    private List<EventsMarksDto> eventsNames = new ArrayList<>();
+    private List<EventsMarksDto> eventsMarks = new ArrayList<>();
 
 
 
