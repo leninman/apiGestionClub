@@ -36,14 +36,24 @@ public class EventRegisterController {
     @PostMapping("/create")
     public ResponseEntity<RespDto> saveEventRegister(@RequestBody EventRegisterDto eventRegisterDto) {
         RespDto response = new RespDto();
-        Optional<Swimmer> swimmer = swimmerRepository.findSwimmerBySwimmerId(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
-        if(swimmer.isEmpty()) {
+        Swimmer swimmer = swimmerRepository.findSwimmerBySwimmerId(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
+        if(swimmer==null) {
             response.setMessage("Swimmer not found");
             response.setCode("404");
             response.setData(new ArrayList<>());
             return ResponseEntity.status(404).body(response);
         }
-        try {
+
+        eventRegisterService.saveEventRegister(eventRegisterDto);
+
+        response.setMessage("Event register saved successfully");
+        response.setCode("201");
+        return ResponseEntity.status(201).body(response);
+
+
+
+
+       /* try {
             for (EventsMarksDto eventMark : eventRegisterDto.getEventsMarks()) {
                 // Obtener el ID del evento basado en el nombre del torneo y el nombre del evento
                 Tournament tournament = tournamentRepository.findTournamentByName(eventMark.getTournamentName());
@@ -69,6 +79,6 @@ public class EventRegisterController {
             response.setMessage("Error saving event register");
             response.setCode("500");
             return ResponseEntity.status(500).body(response);
-        }
+        }*/
     }
 }

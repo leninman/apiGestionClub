@@ -2,6 +2,7 @@ package com.sumadeportes.services;
 
 import com.sumadeportes.model.dto.SwimmerDto;
 import com.sumadeportes.model.entities.PersonId;
+import com.sumadeportes.model.entities.Swimmer;
 import com.sumadeportes.model.entities.Team;
 import com.sumadeportes.model.mapper.SwimmerMapper;
 import com.sumadeportes.model.repositories.SwimmerRepository;
@@ -35,7 +36,7 @@ public class ISwimmerServiceImpl implements ISwimmerService {
     }
 
     @Override
-    public Optional<com.sumadeportes.model.entities.Swimmer> getSwimmerById(PersonId swimmerId) {
+    public Swimmer getSwimmerById(PersonId swimmerId) {
         return swimmerRepository.findSwimmerBySwimmerId(swimmerId);
     }
 

@@ -1,5 +1,7 @@
 package com.sumadeportes.services;
 
+
+
 import com.sumadeportes.model.dto.EventRegisterDto;
 import com.sumadeportes.model.dto.EventsMarksDto;
 import com.sumadeportes.model.entities.*;
@@ -28,19 +30,70 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
     }
 
     @Override
-    public List<com.sumadeportes.model.entities.EventRegister> saveEventRegister(EventRegisterDto eventRegisterDto) {
+    public List<EventRegister> saveEventRegister(EventRegisterDto eventRegisterDto) {
 
         long swimmerNumber = 0L;
         Integer teamNumber = 0;
         Team team = new Team();
-        List<com.sumadeportes.model.entities.EventRegister> eventsRegisteredSaved = new ArrayList<>();
 
-        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
-        if (swimmer.isPresent()) {
-            team = swimmer.get().getTeam();
+        List<EventRegister> eventsRegisterSaved = new ArrayList<>();
+
+
+        Swimmer swimmer = swimmerService.getSwimmerById(new PersonId(eventRegisterDto.getSwimmerDocumentType(), eventRegisterDto.getSwimmerDocumentNumber()));
+
+        team = swimmer.getTeam();
+
+        for(EventsMarksDto eventsMarksDto : eventRegisterDto.getEventsNames()){
+            Tournament tournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(eventsMarksDto.getTournamentName(), eventsMarksDto.getStartDate(), eventsMarksDto.getEndDate());
+            TournamentTeam tournamentTeam = tournamentTeamRepository.findTournamentTeamByTournamentAndTeam(tournament, team);
+            teamNumber = tournamentTeam.getTeamPosition();
+            Event event = eventRepository.findEventByNameAndTournament(eventsMarksDto.getEventName(), tournament);
+            if (event != null) {
+                EventRegister eventRegister = new EventRegister();
+                eventRegister.setEvent(event);
+                eventRegister.setSwimmer(swimmer);
+                eventRegister.setMark(eventsMarksDto.getMark());
+
+                List<EventRegister> eventsRegistered = eventRegisterRepository.findEventRegisterByEvent(event);
+                if (!eventsRegistered. isEmpty()){
+                    List<Integer> swimmerNumbers = new ArrayList<>();
+                    for (EventRegister eventRegistered : eventsRegistered) {
+                        String swimmerNumberString = eventRegistered.getSwimmerNumber();
+                        String stringPart = swimmerNumberString.substring(1);
+                        Integer partInt = Integer.parseInt(stringPart);
+                        swimmerNumbers.add(partInt);
+                    }
+                    Long biggestValue = Long.valueOf(Collections.max(swimmerNumbers));
+                    swimmerNumber = biggestValue + 1;
+
+                }else {
+                    swimmerNumber = 1L;
+                }
+
+                String swimmerNumberFormatted = String.format("%04d", swimmerNumber);
+                String concat = teamNumber + swimmerNumberFormatted;
+                eventRegister.setSwimmerNumber(concat);
+
+                // Guardar el registro del evento
+                EventRegister savedEventRegister = eventRegisterRepository.save(eventRegister);
+                eventsRegisterSaved.add(savedEventRegister);
+            }
         }
 
-        for (EventsMarksDto eventMark : eventRegisterDto.getEventsMarks()) {
+        return eventsRegisterSaved;
+
+
+
+
+        //for (Event event : eventRegisterDto.getEvents()) {
+          //  EventRegister eventRegister = new EventRegister();
+
+        //}
+
+
+        //Tournament tournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(eventRegisterDto.getTournamentName(), eventRegisterDto.getTournamentStartDate(), eventRegisterDto.getTournamentEndDate());
+
+        /*for (EventsMarksDto eventMark : eventRegisterDto.getEventsMarks()) {
             String tournamentName = eventMark.getTournamentName();
             Tournament tournamentSaved = tournamentRepository.findTournamentByName(tournamentName);
             Event event = eventRepository.findEventByNameAndTournament(eventMark.getEventName(), tournamentSaved);
@@ -52,7 +105,7 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             swimmer.ifPresent(eventRegisterToSave::setSwimmer);
             eventRegisterToSave.setEvent(event);
             List<com.sumadeportes.model.entities.EventRegister> eventsRegistered = eventRegisterRepository.findEventRegisterByEvent(event);
-            if (!eventsRegistered.isEmpty()) {
+            if (!eventsRegistered. isEmpty()){
                 List<Integer> swimmerNumbers = new ArrayList<>();
                 for (com.sumadeportes.model.entities.EventRegister eventRegistered : eventsRegistered) {
                     String swimmerNumberString = eventRegistered.getSwimmerNumber();
@@ -74,9 +127,11 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             eventRegisterToSave.setMark(String.valueOf(eventMark.getMark()));
             com.sumadeportes.model.entities.EventRegister eventregisterSaved = eventRegisterRepository.save(eventRegisterToSave);
             eventsRegisteredSaved.add(eventregisterSaved);
-        }
+        }*/
 
-        return eventsRegisteredSaved;
+
+
+
     }
 
     @Override

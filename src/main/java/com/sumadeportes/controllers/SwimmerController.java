@@ -3,6 +3,7 @@ package com.sumadeportes.controllers;
 import com.sumadeportes.model.dto.SwimmerDto;
 import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.PersonId;
+import com.sumadeportes.model.entities.Swimmer;
 import com.sumadeportes.services.ISwimmerService;
 import com.sumadeportes.services.IUserService;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class SwimmerController {
     public ResponseEntity<RespDto> saveSwimmer(@RequestBody SwimmerDto swimmerDto) {
         RespDto response = new RespDto();
         try {
-            Optional<com.sumadeportes.model.entities.Swimmer> swimmer = swimmerService.getSwimmerById(new PersonId(swimmerDto.getDocumentType(), swimmerDto.getDocumentNumber()));
-            if (swimmer.isPresent()) {
+            Swimmer swimmer = swimmerService.getSwimmerById(new PersonId(swimmerDto.getDocumentType(), swimmerDto.getDocumentNumber()));
+            if (swimmer!=null) {
                 response.setMessage("Swimmer already exists");
                 response.setCode("409");
                 response.setData(swimmer);
@@ -51,13 +52,13 @@ public class SwimmerController {
 
     @PostMapping("/getById")
     public ResponseEntity<RespDto> getById(@RequestBody PersonId swimmerId) {
-        Optional<com.sumadeportes.model.entities.Swimmer> swimmer = swimmerService.getSwimmerById(swimmerId);
+        Swimmer swimmer = swimmerService.getSwimmerById(swimmerId);
         RespDto response = new RespDto();
 
-        if (swimmer.isPresent()) {
+        if (swimmer!=null) {
             response.setMessage("Swimmer found");
             response.setCode("200");
-            response.setData(swimmer.get());
+            response.setData(swimmer);
         } else {
             response.setMessage("Swimmer not found");
             response.setCode("404");

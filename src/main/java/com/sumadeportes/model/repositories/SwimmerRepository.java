@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SwimmerRepository extends CrudRepository<Swimmer, PersonId> {
 
-    Optional<Swimmer> findSwimmerBySwimmerId(PersonId swimmerId);
+    Swimmer findSwimmerBySwimmerId(PersonId swimmerId);
 
 }

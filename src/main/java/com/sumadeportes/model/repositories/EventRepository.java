@@ -19,6 +19,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
             "INNER JOIN tests te ON e.test_id = te.id " +
             "WHERE te.gender = :gender " +
             "AND :age BETWEEN te.start_age AND te.end_age " +
+            "AND CURRENT_DATE <= t.start_date " +
             "AND t.id = :tournamentId", nativeQuery = true)
     List<Event> findAllWithTournamentAndTeams(String gender,Integer age,Long tournamentId);
 

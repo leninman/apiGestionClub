@@ -35,12 +35,12 @@ public class MarkController {
     public ResponseEntity<RespDto> getMarkByEvent(@RequestBody MarkRequest markRequest) {
         RespDto response = new RespDto();
         String mark = "";
-        Optional<Swimmer> swimmer = swimmerService.getSwimmerById(markRequest.getSwimmerId());
+        Swimmer swimmer = swimmerService.getSwimmerById(markRequest.getSwimmerId());
         //Test test = testService.getTestById(testId);
         List<Test> tests = testService.getTestsByDescription(markRequest.getTestDescription());
-        if (swimmer.isPresent()) {
-            mark = markService.getMarkByEvent(swimmer.get(), tests.getFirst());
-        }
+
+        mark = markService.getMarkByEvent(swimmer, tests.getFirst());
+
 
         response.setMessage("Marks found");
         response.setCode("200");
