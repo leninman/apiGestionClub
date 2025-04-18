@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface IUserService {
      UserEntity saveUser(UserDto user);
      Optional<UserEntity> getUserByEmail(String email);
-     UserEntity updateUser(UserDto user);
+     void updateUser(UserDto user);
      List<UserEntity> getAllUsers();
 }

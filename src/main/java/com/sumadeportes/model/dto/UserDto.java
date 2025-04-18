@@ -28,7 +28,6 @@ public class UserDto implements Serializable {
     private Boolean enabled;
     public Boolean firstTime;
     private Integer numberRetries;
-   // private List<String> roles; // Solo los nombres de los roles
     private String role;
 
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ItournamentServiceImpl implements ITournamentService {
@@ -33,15 +33,6 @@ public class ItournamentServiceImpl implements ITournamentService {
         return tournamentRepository.findAll();
     }
 
-    @Override
-    public List<Tournament> getTournamentsByDate(LocalDate date) {
-        return tournamentRepository.findTournamentsByDate(date);
-    }
-
-    @Override
-    public Tournament getTournamentByName(String name) {
-        return tournamentRepository.findTournamentByName(name);
-    }
 
     @Override
     public List<Tournament> gestTournamentsByMonth(int month) {

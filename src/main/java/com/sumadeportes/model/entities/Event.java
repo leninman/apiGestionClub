@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,10 @@ public class Event implements Serializable {
     @OneToMany(mappedBy = "event")
     @JsonManagedReference
     private List<EventRegister> eventsRegisters=new ArrayList<>();
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     private Integer eventNumber;
 }

@@ -36,7 +36,7 @@ public class SwimmerController {
                 response.setData(swimmer);
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
-            com.sumadeportes.model.entities.Swimmer savedSwimmer = swimmerService.saveSwimmer(swimmerDto);
+            Swimmer savedSwimmer = swimmerService.saveSwimmer(swimmerDto);
            // savedSwimmer.setUser(userService.getUserByEmail(swimmerDto.getEmail()).get());
             response.setMessage("Swmmer saved successfully");
             response.setCode("201");

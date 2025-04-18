@@ -18,17 +18,8 @@ public class ItournamentTeamServiceImpl implements ITournamentTeamService{
     }
 
     @Override
-    public List<TournamentTeam> findTournamentTeamsByTournament(Tournament tournament) {
-        return tournamentTeamRepository.findTournamentTeamsByTournament(tournament);
-    }
-
-    @Override
     public List<TournamentTeam> findAllTournamentsTeams() {
         return tournamentTeamRepository.findAll();
     }
 
-    @Override
-    public TournamentTeam findTeamByTournamentAndTeam(Tournament tournament, Team team) {
-        return tournamentTeamRepository.findTournamentTeamByTournamentAndTeam(tournament, team);
-    }
 }

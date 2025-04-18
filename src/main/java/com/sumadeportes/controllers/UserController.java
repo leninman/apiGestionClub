@@ -6,10 +6,14 @@ import com.sumadeportes.model.dto.RespDto;
 import com.sumadeportes.model.entities.UserEntity;
 import com.sumadeportes.services.EmailService;
 import com.sumadeportes.services.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -17,6 +21,10 @@ import java.util.Optional;
 @RequestMapping("/user")
 @CrossOrigin(origins = "https://erika-github.github.io")
 public class UserController {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 
     private final IUserService userService;
     private final EmailService emailService;
@@ -39,6 +47,7 @@ public class UserController {
                 response.setData(new ArrayList<>());
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
+
             UserEntity savedUser = userService.saveUser(userDto);
             emailService.sendPasswordEmail(savedUser.getEmail(), savedUser.getPassword());
             response.setMessage("User saved successfully and email sent with password");
@@ -89,6 +98,15 @@ public class UserController {
         response.setData(null);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+
+    public static int calculateAge(LocalDate bornDate) {
+            return Period.between(bornDate, LocalDate.now()).getYears();
+    }
+
+
+
 
 
 }

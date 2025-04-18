@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/events")
@@ -34,11 +31,16 @@ public class EventController {
     public ResponseEntity<RespDto> createEvents(@RequestBody EventDto events) {
         RespDto response = new RespDto();
         try {
-            eventService.saveEvents(events);
-            response.setMessage("Events saved successfully");
-            response.setCode("201");
-            //response.setData(eventsSaved);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+            List<Event> eventsSaved=eventService.saveEvents(events);
+            if(eventsSaved==null){
+                response.setMessage("Some events already exists in the tournament");
+                response.setCode("409");
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }else {
+                response.setMessage("Events saved successfully");
+                response.setCode("201");
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            }
         } catch (Exception e) {
             response.setMessage("Error saving events");
             response.setCode("500");
@@ -74,6 +76,10 @@ public class EventController {
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
+
+// Ordenar la lista de eventResponses por el número del día de startDate en forma ascendente
+        eventResponses.sort(Comparator.comparing(EventResponse::getStartDate));
+
         respDto.setData(eventResponses);
         return ResponseEntity.ok(respDto);
     }
@@ -111,6 +117,8 @@ public class EventController {
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
+        // Ordenar la lista de eventResponses por el número del día de startDate en forma ascendente
+        eventResponses.sort(Comparator.comparing(EventResponse::getStartDate));
         respDto.setData(eventResponses);
         return ResponseEntity.ok(respDto);
     }
@@ -141,6 +149,8 @@ public class EventController {
         }
         respDto.setCode("200");
         respDto.setMessage("Events found");
+        // Ordenar la lista de eventResponses por el número del día de startDate en forma ascendente
+        eventResponses.sort(Comparator.comparing(EventResponse::getStartDate));
         respDto.setData(eventResponses);
         return ResponseEntity.ok(respDto);
     }

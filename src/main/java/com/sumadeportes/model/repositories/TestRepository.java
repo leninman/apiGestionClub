@@ -9,7 +9,4 @@ import java.util.List;
 @Repository
 public interface TestRepository extends JpaRepository<Test, Long> {
     List<Test> findTestByDescription(String testName);
-
-    List<Test> findTestByGenderAndStartAgeAndEndAgeAndStyleAndLength(String gender, Integer startAge, Integer endAge, String style, Integer length);
-
 }

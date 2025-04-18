@@ -24,12 +24,6 @@ public class ITestServiceImpl implements ITestService {
     }
 
     @Override
-    public Test getTestById(Long testId) {
-        return testRepository.findById(testId)
-                .orElseThrow(() -> new RuntimeException("Test not found with id: " + testId));
-    }
-
-    @Override
     public List<Test> getTestsByDescription(String description) {
         return testRepository.findTestByDescription(description);
     }

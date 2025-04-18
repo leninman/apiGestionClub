@@ -10,7 +10,7 @@ import com.sumadeportes.model.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public class ISwimmerServiceImpl implements ISwimmerService {
 
@@ -23,8 +23,8 @@ public class ISwimmerServiceImpl implements ISwimmerService {
     }
 
     @Override
-    public com.sumadeportes.model.entities.Swimmer saveSwimmer(SwimmerDto swimmerDto) {
-        com.sumadeportes.model.entities.Swimmer swimmer = SwimmerMapper.toSwimmer(swimmerDto);
+    public Swimmer saveSwimmer(SwimmerDto swimmerDto) {
+        Swimmer swimmer = SwimmerMapper.toSwimmer(swimmerDto);
         Team team=teamRepository.findTeamByteamName(swimmerDto.getTeam());
         if(team!=null){
             swimmer.setTeam(team);
@@ -41,7 +41,11 @@ public class ISwimmerServiceImpl implements ISwimmerService {
     }
 
     @Override
-    public List<com.sumadeportes.model.entities.Swimmer> getAllSwimmers() {
-        return (List<com.sumadeportes.model.entities.Swimmer>) swimmerRepository.findAll();
+    public List<Swimmer> getAllSwimmers() {
+        return (List<Swimmer>) swimmerRepository.findAll();
+    }
+
+    public List<String> getNumDocs(String numDoc) {
+        return swimmerRepository.findDocumentNumberBySwimmerId(numDoc);
     }
 }

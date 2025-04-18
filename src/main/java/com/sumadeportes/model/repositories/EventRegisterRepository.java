@@ -11,7 +11,5 @@ import java.util.List;
 public interface EventRegisterRepository extends CrudRepository<EventRegister, Long> {
     EventRegister findEventRegisterByEventAndSwimmer(Event event, Swimmer swimmer);
     List<EventRegister> findEventRegisterByEvent(Event event);
-
     boolean existsByEventAndSwimmer(Event event, Swimmer swimmer);
-
 }

@@ -21,22 +21,21 @@ import java.util.Optional;
 public class MarkController {
     private final IMarkService markService;
     private final ISwimmerService swimmerService;
-    private final IEventService eventService;
+
     private final ITestService testService;
 
-    public MarkController(IMarkService markService, ISwimmerService swimmerService, IEventService eventService, ITestService testService) {
+    public MarkController(IMarkService markService, ISwimmerService swimmerService, ITestService testService) {
         this.markService = markService;
         this.swimmerService = swimmerService;
-        this.eventService = eventService;
         this.testService = testService;
     }
 
     @PostMapping("/getMark")
     public ResponseEntity<RespDto> getMarkByEvent(@RequestBody MarkRequest markRequest) {
         RespDto response = new RespDto();
-        String mark = "";
+        String mark;
         Swimmer swimmer = swimmerService.getSwimmerById(markRequest.getSwimmerId());
-        //Test test = testService.getTestById(testId);
+
         List<Test> tests = testService.getTestsByDescription(markRequest.getTestDescription());
 
         mark = markService.getMarkByEvent(swimmer, tests.getFirst());

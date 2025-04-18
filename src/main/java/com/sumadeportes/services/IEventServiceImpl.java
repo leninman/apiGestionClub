@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -42,16 +43,20 @@ public class IEventServiceImpl implements IEventService {
     }
 
     @Override
-    public void saveEvents(EventDto eventsIn) {
-        Integer eventCounter = 1;
+    public List<Event> saveEvents(EventDto eventsIn) {
+        int eventCounter = 1;
         String tournamentName = eventsIn.getTournamentName();
-        String keyWord=" desde";
-        int ind=tournamentName.indexOf(keyWord);
-        if(ind!=-1){
-            tournamentName=tournamentName.substring(0,ind);
+        String keyWord = " desde";
+        int ind = tournamentName.indexOf(keyWord);
+        List<Event> eventsRegistered = new ArrayList<>();
+
+        if (ind != -1) {
+            tournamentName = tournamentName.substring(0, ind);
         }
+
         Tournament tournament = tournamentRepository.findTournamentByTournamentNameAndStartDateAndEndDate(
                 tournamentName, eventsIn.getStartDate(), eventsIn.getEndDate());
+
         List<Event> tournamentsEvents = eventRepository.findEventByTournament(tournament);
 
         if (!tournamentsEvents.isEmpty()) {
@@ -61,32 +66,50 @@ public class IEventServiceImpl implements IEventService {
                     .orElse(0) + 1; // Incrementar el valor máximo encontrado
         }
 
+        // Verificar si algún evento ya existe
+        boolean anyEventExists = eventsIn.getEventsNames().stream()
+                .anyMatch(testName -> eventRepository.findEventByNameAndTournament(testName, tournament) != null);
+
+        if (anyEventExists) {
+            return null; // Retornar null si algún evento ya existe
+        }
+
+        // Guardar los eventos
         List<String> testsNames = eventsIn.getEventsNames();
         for (String testName : testsNames) {
             Event eventToRegister = new Event();
             eventToRegister.setTournament(tournament);
-            Test test = testRepository.findTestByDescription(testName).getFirst();
+
+            // Validar si el test existe
+            Test test = testRepository.findTestByDescription(testName)
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Test no encontrado: " + testName));
+
             eventToRegister.setTest(test);
             eventToRegister.setName(testName);
             eventToRegister.setEventNumber(eventCounter++);
+            eventToRegister.setStartDate(eventsIn.getStartDate());
+            eventToRegister.setEndDate(eventsIn.getEndDate());
             eventRepository.save(eventToRegister);
+            eventsRegistered.add(eventToRegister);
         }
+
+        return eventsRegistered;
     }
 
-    @Override
-    public List<Event> getEventsByTournament(Tournament tournament) {
-        return eventRepository.findEventByTournament(tournament);
-    }
+
 
     @Override
     public List<Event> getEventsByGenderAgeTournament(String gender,Integer age,Long tournamentId) {
-        return eventRepository.findAllWithTournamentAndTeams(gender,age,tournamentId);
+        List<Event> events = eventRepository.findAllWithTournamentAndTeams(gender,age,tournamentId);
+        List<Event> eventsOrdered = events.stream()
+                .sorted(Comparator.comparing(event -> event.getStartDate().getDayOfMonth()))
+                .toList();
+
+        return eventsOrdered;
     }
 
-    @Override
-    public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElse(null);
-    }
 
     @Override
     public List<Event> getOutOfCategoryEvents(String gender, int age, Long tournamentId) {
@@ -99,14 +122,5 @@ public class IEventServiceImpl implements IEventService {
         return eventRepository.findAllWithTournamentAndTeamsEnded(gender,age,tournamentId);
     }
 
-    @Override
-    public Boolean isEventRegistered(Event event, String swimmerDocumentType, String swimmerDocumentNumber) {
-        Swimmer swimmer=swimmerRepository.findSwimmerBySwimmerId(new PersonId(swimmerDocumentType,swimmerDocumentNumber));
-        EventRegister e= eventRegisterRepository.findEventRegisterByEventAndSwimmer(event,swimmer);
-        if (e != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 }
