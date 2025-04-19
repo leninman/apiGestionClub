@@ -17,6 +17,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/payments")
+@CrossOrigin(origins = "https://erika-github.github.io")
 public class PaymentController {
     private final IPaymentService paymentService;
 
