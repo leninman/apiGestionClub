@@ -2,9 +2,10 @@ package com.sumadeportes.model.mapper;
 
 import com.sumadeportes.model.dto.SwimmerDto;
 import com.sumadeportes.model.entities.PersonId;
+import com.sumadeportes.model.entities.Swimmer;
 
 public class SwimmerMapper {
-    public static SwimmerDto toSwimmerDto(com.sumadeportes.model.entities.Swimmer swimmer) {
+    public static SwimmerDto toSwimmerDto(Swimmer swimmer) {
         if (swimmer == null) {
             return null;
         }
@@ -33,11 +34,11 @@ public class SwimmerMapper {
 
     }
 
-    public static com.sumadeportes.model.entities.Swimmer toSwimmer(SwimmerDto swimmerDto) {
+    public static Swimmer toSwimmer(SwimmerDto swimmerDto) {
         if (swimmerDto == null) {
             return null;
         }
-       com.sumadeportes.model.entities.Swimmer swimmer = new com.sumadeportes.model.entities.Swimmer();
+       Swimmer swimmer = new Swimmer();
          swimmer.setSwimmerId(new PersonId(swimmerDto.getDocumentType(), swimmerDto.getDocumentNumber()));
             swimmer.setFirstName(swimmerDto.getFirstName());
             swimmer.setSecondName(swimmerDto.getSecondName());
