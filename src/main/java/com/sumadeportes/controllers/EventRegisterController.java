@@ -53,5 +53,5 @@ public class EventRegisterController {
         return ResponseEntity.status(201).body(response);
     }
 
-    public ResponseEntity<RespDto> getEventsRegister
+
 }
