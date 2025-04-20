@@ -27,15 +27,16 @@ public class IPaymentServiceImpl implements IPaymentService {
 
         Payment payment = new Payment();
 
-        if(paymentRequest.getPaymentMedium().equals("PM")){
-            payment.setPaymentMedium("PM");
+        if(paymentRequest.getPaymentMedium().equals("pagoMovil")){
+            payment.setPaymentMedium("pagoMovil");
             payment.setOrgBank(paymentRequest.getOrgBank());
             payment.setPaymentAmount(paymentRequest.getPaymentAmount());
             payment.setPaymentReference(paymentRequest.getPaymentReference());
             payment.setCelNumber(paymentRequest.getCelNumber());
             payment.setPaymentDate(paymentRequest.getPaymentDate());
         }
-        if(paymentRequest.getPaymentMedium().equals("TR")){
+        if(paymentRequest.getPaymentMedium().equals("transferencia")){
+            payment.setPaymentMedium("transferencia");
             payment.setOrgBank(paymentRequest.getOrgBank());
             payment.setPaymentAmount(paymentRequest.getPaymentAmount());
             payment.setOrgAccount(paymentRequest.getOrgAccount());
@@ -45,7 +46,8 @@ public class IPaymentServiceImpl implements IPaymentService {
             payment.setDocNumber(paymentRequest.getDocNumber());
             payment.setPaymentDate(paymentRequest.getPaymentDate());
         }
-        if(paymentRequest.getPaymentMedium().equals("ZE")){
+        if(paymentRequest.getPaymentMedium().equals("zelle")){
+            payment.setPaymentMedium("zelle");
             payment.setEmail(paymentRequest.getEmail());
             payment.setPaymentAmount(paymentRequest.getPaymentAmount());
             payment.setPaymentDate(paymentRequest.getPaymentDate());

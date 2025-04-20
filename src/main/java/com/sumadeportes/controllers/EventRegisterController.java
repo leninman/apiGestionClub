@@ -52,4 +52,6 @@ public class EventRegisterController {
         response.setCode("201");
         return ResponseEntity.status(201).body(response);
     }
+
+    public ResponseEntity<RespDto> getEventsRegister
 }

@@ -8,6 +8,7 @@ import com.sumadeportes.model.entities.*;
 import com.sumadeportes.model.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -83,13 +84,18 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
 
 
     @Override
-    public List<com.sumadeportes.model.entities.EventRegister> getAllEventRegisters() {
+    public List<EventRegister> getAllEventRegisters() {
         return List.of();
     }
 
     @Override
-    public com.sumadeportes.model.entities.EventRegister getEventRegisterById(Long id) {
+    public EventRegister getEventRegisterById(Long id) {
         return null;
+    }
+
+    @Override
+    public List<EventRegister> findEventsRegistersByTournaments(String tournamentName, LocalDate startDate, LocalDate endDate) {
+        return eventRegisterRepository.findEventRegisterByTournamentNameAndDates(tournamentName, startDate, endDate);
     }
 
 }
