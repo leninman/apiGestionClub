@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -13,7 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventRegisterRequest implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    @Serial
+    private static final long serialVersionUID = 4183456105119731414L;
     private String tournamentName;
     private LocalDate tournamentStartDate;
     private LocalDate tournamentEndDate;

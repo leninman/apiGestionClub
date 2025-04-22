@@ -1,16 +1,21 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.model.dto.EventRegisterDto;
-import com.sumadeportes.model.dto.EventsMarksDto;
-import com.sumadeportes.model.dto.RespDto;
+import com.sumadeportes.Utils;
+import com.sumadeportes.model.dto.*;
 import com.sumadeportes.model.entities.*;
 import com.sumadeportes.model.repositories.EventRepository;
 import com.sumadeportes.model.repositories.SwimmerRepository;
 import com.sumadeportes.model.repositories.TournamentRepository;
 import com.sumadeportes.services.IEventsRegisterService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +56,34 @@ public class EventRegisterController {
         response.setMessage("Event register saved successfully");
         response.setCode("201");
         return ResponseEntity.status(201).body(response);
+    }
+    @PostMapping("/get")
+    public ResponseEntity<RespDto> getEventRegister(@RequestBody EventRegisterRequest eventRegisterRequest) {
+        RespDto response = new RespDto();
+         RegisterSheet registerSheet=eventRegisterService.findEventsRegistersByTournaments(eventRegisterRequest);
+        if(registerSheet==null) {
+            response.setMessage("No event registers found");
+            response.setCode("404");
+            response.setData(new ArrayList<>());
+            return ResponseEntity.status(404).body(response);
+        }
+        response.setMessage("Event register found");
+        response.setCode("200");
+        response.setData(registerSheet);
+        return ResponseEntity.status(200).body(response);
+    }
+    @PostMapping("/exportExcel")
+    public ResponseEntity<byte[]> exportToExcel(@RequestBody EventRegisterRequest eventRegisterRequest) throws IOException, IOException {
+        RegisterSheet registerSheet = eventRegisterService.findEventsRegistersByTournaments(eventRegisterRequest);
+        Utils utils = new Utils();
+        byte[] excelData = utils.generateExcelEventsRegister(registerSheet);
+
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=registro_eventos.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excelData);
     }
 
 

@@ -14,11 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class EventRegisterResponse implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String swimmerDocType;
+    private String swimmerDocNumber;
     private String swimmerName;
+    private String swimmerGender;
+    private String swimmerAge;
+    private String swimmerLastName;
     private String swimmerNumber;
-
-
-    private List<String> eventsNames;
+    private List<EventMarkDto> events;
 
 
 }

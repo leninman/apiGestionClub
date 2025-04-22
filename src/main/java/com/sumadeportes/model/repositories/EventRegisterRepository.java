@@ -26,4 +26,13 @@ public interface EventRegisterRepository extends CrudRepository<EventRegister, L
             "AND t.end_date = :endDate",
             nativeQuery = true)
     List<EventRegister> findEventRegisterByTournamentNameAndDates(String tournamentName, LocalDate startDate, LocalDate endDate);
+
+
+   @Query(value="SELECT er.* from event_register er " +
+           "INNER JOIN events e ON er.event_id = e.id " +
+           "INNER JOIN tournaments t ON e.tournament_id = t.id " +
+           "WHERE t.tournament_name = :tournamentName " +
+           "AND t.start_date = :startDate " +
+           "AND t.end_date = :endDate",nativeQuery = true)
+    List<EventRegister> findEventsRegisteredByTournament(String tournamentName, LocalDate startDate, LocalDate endDate);
 }
