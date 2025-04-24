@@ -1,4 +1,4 @@
-package com.sumadeportes;
+package com.sumadeportes.utils;
 
 import com.sumadeportes.model.dto.EventMarkDto;
 import com.sumadeportes.model.dto.EventRegisterResponse;

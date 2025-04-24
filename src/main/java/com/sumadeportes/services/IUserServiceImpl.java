@@ -1,7 +1,7 @@
 package com.sumadeportes.services;
 
 
-import com.sumadeportes.Utils;
+import com.sumadeportes.utils.Utils;
 import com.sumadeportes.model.dto.UserDto;
 import com.sumadeportes.model.entities.PersonId;
 import com.sumadeportes.model.entities.UserEntity;

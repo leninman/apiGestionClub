@@ -141,6 +141,7 @@ public class IEventRegisterServiceImpl implements IEventsRegisterService{
             for (EventRegister swimmerEventRegister : swimmerEventRegisters) {
                 EventMarkDto eventsMarksDto = new EventMarkDto();
                 eventsMarksDto.setEventName(swimmerEventRegister.getEvent().getName());
+                eventsMarksDto.setEventNumber(String.valueOf(swimmerEventRegister.getEvent().getEventNumber()));
                 eventsMarksDto.setMark(swimmerEventRegister.getMark());
                 eventsMarksDtos.add(eventsMarksDto);
             }

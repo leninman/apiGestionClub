@@ -16,5 +16,6 @@ public class EventMarkDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 6529721085450373355L;
     private String eventName;
+    private String eventNumber;
     private String mark;
 }

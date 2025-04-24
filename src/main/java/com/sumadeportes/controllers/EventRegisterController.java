@@ -1,6 +1,7 @@
 package com.sumadeportes.controllers;
 
-import com.sumadeportes.Utils;
+import com.sumadeportes.utils.ExcelGenerator;
+import com.sumadeportes.utils.Utils;
 import com.sumadeportes.model.dto.*;
 import com.sumadeportes.model.entities.*;
 import com.sumadeportes.model.repositories.EventRepository;
@@ -12,13 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/eventsregister")
@@ -76,7 +73,9 @@ public class EventRegisterController {
     public ResponseEntity<byte[]> exportToExcel(@RequestBody EventRegisterRequest eventRegisterRequest) throws IOException, IOException {
         RegisterSheet registerSheet = eventRegisterService.findEventsRegistersByTournaments(eventRegisterRequest);
         Utils utils = new Utils();
-        byte[] excelData = utils.generateExcelEventsRegister(registerSheet);
+        //byte[] excelData = utils.generateExcelEventsRegister(registerSheet);
+      //  ExcelGenerator excelGenerator = new ExcelGenerator();
+        byte[] excelData = ExcelGenerator.generarExcel(registerSheet);
 
 
 
