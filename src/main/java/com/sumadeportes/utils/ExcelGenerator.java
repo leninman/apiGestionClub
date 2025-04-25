@@ -20,13 +20,15 @@ public class ExcelGenerator {
             CellStyle headerStyle = createHeaderStyle(workbook);
             CellStyle subHeaderStyle = createSubHeaderStyle(workbook);
             CellStyle borderedStyle = createBorderedStyle(workbook);
+            borderedStyle.setAlignment(HorizontalAlignment.CENTER); // Centrado horizontal
+            borderedStyle.setVerticalAlignment(VerticalAlignment.CENTER); // Centrado vertical
 
             // Cabecera
             createLabelRow(sheet, 0, "COPA", registerSheet.getTournament(), headerStyle);
             createLabelRow(sheet, 1, "EQUIPO", registerSheet.getTeamName(), headerStyle);
 
             // Encabezado de tabla
-            String[] headers = {"NADADOR Nº", "APELLIDO", "NOMBRE", "CATEGORÍA (Años)", "EVENTO", "TIEMPO DE INSCRIPCION", "EVENTO Nº"};
+            String[] headers = {"NADADOR Nº", "APELLIDO DEL ATLETA", "NOMBRE DEL ATLETA", "CATEGORÍA (Años)", "EVENTO", "TIEMPO DE INSCRIPCION", "EVENTO Nº"};
             Row headerRow = sheet.createRow(3);
             for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
@@ -34,18 +36,12 @@ public class ExcelGenerator {
                 cell.setCellStyle(subHeaderStyle);
             }
 
-            /* Fila de ejemplo*/
-            //Row dataRow = sheet.createRow(4);
-            //Object[] rowData = {5001, "Perez", "Maria", "F", 9, "50 Espalda, 9 Años, F", "00:50", 27};
-            //for (int i = 0; i < rowData.length; i++) {
-            //  Cell cell = dataRow.createCell(i);
-            //cell.setCellValue(rowData[i].toString());
-            //cell.setCellStyle(borderedStyle);
-            //}
-
+            // Datos agrupados por nadador
+            final int[] startRow = {4};
             registerSheet.getEventRegisterResponses().forEach(response -> {
+                int groupStartRow = startRow[0];
                 response.getEvents().forEach(event -> {
-                    Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+                    Row row = sheet.createRow(startRow[0]++);
                     row.createCell(0).setCellValue(response.getSwimmerNumber());
                     row.createCell(1).setCellValue(response.getSwimmerLastName());
                     row.createCell(2).setCellValue(response.getSwimmerName());
@@ -53,9 +49,15 @@ public class ExcelGenerator {
                     row.createCell(4).setCellValue(event.getEventName());
                     row.createCell(5).setCellValue(event.getMark());
                     row.createCell(6).setCellValue(event.getEventNumber());
-
+                    for (int i = 0; i < 7; i++) {
+                        row.getCell(i).setCellStyle(borderedStyle); // Aplicar estilo centrado
+                    }
                 });
-
+                if (startRow[0] - groupStartRow > 1) {
+                    for (int col = 0; col <= 3; col++) { // Columnas a centrar verticalmente
+                        sheet.addMergedRegion(new CellRangeAddress(groupStartRow, startRow[0] - 1, col, col));
+                    }
+                }
             });
 
             // Ajuste automático del ancho de las columnas
@@ -66,9 +68,7 @@ public class ExcelGenerator {
             workbook.write(out);
             return out.toByteArray();
         }
-
     }
-
     // Métodos auxiliares de estilo
 
     private static CellStyle createHeaderStyle(Workbook wb) {
@@ -87,6 +87,8 @@ public class ExcelGenerator {
         style.setFont(font);
         style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(HorizontalAlignment.CENTER); // Centrado horizontal
+        style.setVerticalAlignment(VerticalAlignment.CENTER); // Centrado vertical
         setBorders(style);
         return style;
     }
