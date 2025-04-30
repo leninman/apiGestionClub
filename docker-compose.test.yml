@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+    container_name: springboot_test
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+    depends_on:
+      - mysql-test
+
+  mysql-test:
+    image: mysql:8.0
+    container_name: mysql_test
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_test
+      - MYSQL_DATABASE=gestion_club_test
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test_pass
+    volumes:
+      - mysql-data-test:/var/lib/mysql
+
+volumes:
+  mysql-data-test:
