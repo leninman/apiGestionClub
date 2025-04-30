@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+    container_name: springboot_dev
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+    depends_on:
+      - mysql-dev
+
+  mysql-dev:
+    image: mysql:8.0
+    container_name: mysql_dev
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_dev
+      - MYSQL_DATABASE=gestion_club_dev
+      - MYSQL_USER=dev_user
+      - MYSQL_PASSWORD=dev_pass
+    volumes:
+      - mysql-data-dev:/var/lib/mysql
+
+volumes:
+  mysql-data-dev:
