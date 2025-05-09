@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  backend:
+  gestionclub-backend:
     build:
       context: .
-    container_name: springboot_dev
+    container_name: gestionclub_dev
     ports:
-      - "8081:8080"
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
@@ -15,19 +15,41 @@ services:
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
     depends_on:
-      - mysql-dev
-
-  mysql-dev:
+      gestionclub-mysql-dev:
+        condition: service_healthy
+    #networks:
+      #- backend
+  gestionclub-mysql-dev:
     image: mysql:8.0
-    container_name: mysql_dev
+    container_name: gestionclub-mysql-dev
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root_dev
-      - MYSQL_DATABASE=gestion_club_dev
-      - MYSQL_USER=dev_user
-      - MYSQL_PASSWORD=dev_pass
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=sumadeportes
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=1234
+    ports:
+      - "3307:3306"
     volumes:
       - mysql-data-dev:/var/lib/mysql
-
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    #networks:
+      #- backend
+  #adminer:
+    #image: adminer
+    #container_name: adminer
+    #restart: always
+    #ports:
+      #- "8082:8080"
+    #depends_on:
+      #- mysql-dev
 volumes:
   mysql-data-dev:
+    driver: local
+#networks:
+      #backend:
+

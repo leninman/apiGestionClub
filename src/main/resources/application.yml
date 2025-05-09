@@ -2,38 +2,42 @@ spring:
   application:
     name: gestionclubApi
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}  # Por defecto es 'dev'
+    active: ${SPRING_PROFILES_ACTIVE:test}  # Por defecto es 'dev'
 
 ---
-
+#DEV
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/sumadeportes}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME:sumadeportesapp@gmail.com}
+    password: ${MAIL_PASSWORD:fjiqdxqgtecxfvlf}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
       mail.smtp.ssl.enable: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
 
 ---
-
+#TEST
 spring:
   config:
     activate:
@@ -59,3 +63,11 @@ spring:
       mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
       mail.smtp.ssl.enable: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+
+
